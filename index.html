@@ -7,12 +7,7 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;1,500&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    :root {
-      --bg-top: #fff5f8;
-      --bg-bottom: #fde4ec;
-      --gold: #d4af37;
-      --rose-dark: #7a3b4e;
-    }
+    :root { --bg-top: #fff5f8; --bg-bottom: #fde4ec; --gold: #d4af37; --rose-dark: #7a3b4e; }
     body {
       font-family: 'Quicksand', sans-serif;
       background: linear-gradient(180deg, var(--bg-top) 0%, var(--bg-bottom) 100%);
@@ -22,56 +17,103 @@
     }
     .font-serif-elegant { font-family: 'Playfair Display', serif; }
     .gold-border { border: 1.5px solid rgba(212, 175, 55, 0.45); }
-    .day-card {
-      transition: transform 0.22s ease, box-shadow 0.22s ease;
+
+    /* Cajitas de regalo */
+    .gift-box {
       position: relative;
       overflow: hidden;
+      transition: transform 0.22s ease, box-shadow 0.22s ease;
+      box-shadow: 0 6px 14px -5px rgba(122, 59, 78, 0.18), inset 0 1px 0 rgba(255,255,255,0.7);
     }
-    .day-card:active { transform: scale(0.96); }
-    .day-card.unlocked:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 10px 25px -8px rgba(201, 107, 136, 0.35);
+    .gift-box:active { transform: scale(0.95); }
+    .gift-box.unlocked:hover { transform: translateY(-3px); }
+    .ribbon-v { position: absolute; top: 0; bottom: 0; left: 50%; width: 14px; transform: translateX(-50%); opacity: 0.9; pointer-events: none; }
+    .ribbon-h { position: absolute; left: 0; right: 0; top: 50%; height: 14px; transform: translateY(-50%); opacity: 0.9; pointer-events: none; }
+    .gift-bow { position: absolute; top: 3px; left: 50%; transform: translateX(-50%); width: 34px; height: 18px; z-index: 5; pointer-events: none; filter: drop-shadow(0 2px 2px rgba(0,0,0,0.12)); }
+    .gift-tag {
+      position: relative; z-index: 6;
+      background: rgba(255, 255, 255, 0.92);
+      border-radius: 14px;
+      padding: 4px 10px;
+      min-width: 56px;
+      box-shadow: 0 3px 10px rgba(122, 59, 78, 0.14);
+      backdrop-filter: blur(2px);
+    }
+
+    /* Días especiales: brillo animado + aura + meneo periódico */
+    .is-special {
+      animation: specialWiggle 3.8s ease-in-out infinite, specialGlow 2.4s ease-in-out infinite;
+    }
+    .is-special::after {
+      content: "";
+      position: absolute;
+      top: -20%; left: -120%;
+      width: 65%; height: 140%;
+      background: linear-gradient(110deg, transparent 20%, rgba(255,255,255,0.82) 50%, transparent 80%);
+      transform: skewX(-20deg);
+      animation: shimmerSweep 2.6s ease-in-out infinite;
+      pointer-events: none;
+      z-index: 8;
     }
     .special-floral {
-      background: linear-gradient(145deg, #fffdf6 0%, #fff4f7 55%, #f9ebd0 100%) !important;
-      border: 2px solid #d4af37 !important;
-      box-shadow: 0 0 16px rgba(212, 175, 55, 0.32), inset 0 0 0 3px #fffdf6, inset 0 0 0 4.5px rgba(212, 175, 55, 0.55);
+      background: linear-gradient(135deg, #fff5c0 0%, #f3c84b 48%, #d49b1a 100%) !important;
+      border: 2px solid #fff3b8 !important;
+      --glow-color: rgba(212, 175, 55, 0.65);
     }
     .special-filigrana {
-      background: linear-gradient(145deg, #fffaf0 0%, #fdeef3 50%, #f7e4bc 100%) !important;
-      border: 2px solid #c59b27 !important;
-      box-shadow: 0 0 18px rgba(197, 155, 39, 0.38), inset 0 0 0 3px #fffaf0, inset 0 0 0 5px rgba(197, 155, 39, 0.7);
+      background: linear-gradient(135deg, #ff9ebb 0%, #db4875 52%, #a61e4d 100%) !important;
+      border: 2px solid #f7d774 !important;
+      --glow-color: rgba(219, 72, 117, 0.58);
     }
     .special-corazones {
-      background: linear-gradient(145deg, #fff5f8 0%, #ffe6ef 55%, #faecd1 100%) !important;
-      border: 2px solid #d4899e !important;
-      box-shadow: 0 0 16px rgba(212, 137, 158, 0.35), inset 0 0 0 3px #fff8fa, inset 0 0 0 4.5px rgba(212, 175, 55, 0.65);
+      background: linear-gradient(135deg, #fff9fc 0%, #ffd4e5 48%, #f4cf72 100%) !important;
+      border: 2px solid #e0b443 !important;
+      --glow-color: rgba(232, 165, 190, 0.72);
     }
-    .ornament-svg {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
+    @keyframes shimmerSweep {
+      0%, 35% { left: -120%; }
+      75%, 100% { left: 160%; }
     }
-    .snowflake {
-      position: fixed;
-      top: -10px;
-      color: rgba(212, 175, 55, 0.45);
-      user-select: none;
-      pointer-events: none;
-      z-index: 1;
-      animation: fall linear infinite;
+    @keyframes specialGlow {
+      0%, 100% { box-shadow: 0 4px 14px var(--glow-color, rgba(212,175,55,0.5)); }
+      50% { box-shadow: 0 0 24px 3px var(--glow-color, rgba(212,175,55,0.8)); }
     }
+    @keyframes specialWiggle {
+      0%, 72%, 100% { transform: rotate(0deg) scale(1); }
+      78% { transform: rotate(-4deg) scale(1.04); }
+      84% { transform: rotate(4deg) scale(1.04); }
+      90% { transform: rotate(-2.5deg) scale(1.02); }
+      95% { transform: rotate(2deg) scale(1.01); }
+    }
+
+    /* Meneo fuerte al tocar para abrir */
+    .shaking { animation: boxShake 0.44s ease-in-out !important; z-index: 20; }
+    @keyframes boxShake {
+      0% { transform: scale(1) rotate(0deg); }
+      15% { transform: scale(1.1) rotate(-9deg); }
+      32% { transform: scale(1.12) rotate(9deg); }
+      50% { transform: scale(1.14) rotate(-8deg); }
+      68% { transform: scale(1.12) rotate(8deg); }
+      85% { transform: scale(1.06) rotate(-4deg); }
+      100% { transform: scale(1) rotate(0deg); }
+    }
+
+    /* Carta entrando con rebote y ligeramente chueca */
+    .card-bounce-in {
+      animation: cardBounce 0.58s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    }
+    @keyframes cardBounce {
+      0% { opacity: 0; transform: scale(0.45) rotate(calc(var(--card-tilt, -2deg) * -2.2)); }
+      62% { opacity: 1; transform: scale(1.05) rotate(calc(var(--card-tilt, -2deg) * 1.25)); }
+      82% { transform: scale(0.98) rotate(calc(var(--card-tilt, -2deg) * 0.85)); }
+      100% { opacity: 1; transform: scale(1) rotate(var(--card-tilt, -2deg)); }
+    }
+
+    .snowflake { position: fixed; top: -10px; color: rgba(212, 175, 55, 0.45); user-select: none; pointer-events: none; z-index: 1; animation: fall linear infinite; }
     @keyframes fall { to { transform: translateY(105vh) rotate(360deg); } }
     .heart-pulse { animation: pulseHeart 2.4s infinite ease-in-out; }
     @keyframes pulseHeart { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.08); } }
-    .polaroid {
-      background: #fff;
-      padding: 10px 10px 28px 10px;
-      box-shadow: 0 10px 25px rgba(122, 59, 78, 0.16);
-      border: 1px solid #f3e2b3;
-    }
+    .polaroid { background: #fff; padding: 10px 10px 28px 10px; box-shadow: 0 10px 25px rgba(122, 59, 78, 0.16); border: 1px solid #f3e2b3; }
   </style>
 </head>
 <body class="relative pb-14">
@@ -80,23 +122,17 @@
   <div id="lockScreen" class="fixed inset-0 z-[55] flex items-center justify-center p-5 transition-opacity duration-500"
     style="background: linear-gradient(180deg, #fff5f8 0%, #fde4ec 100%);">
     <div class="bg-white/95 gold-border rounded-3xl max-w-sm w-full p-7 shadow-2xl text-center">
-      <div class="mx-auto mb-4 w-14 h-14 rounded-full bg-[#fde4ec] gold-border flex items-center justify-center text-2xl heart-pulse">
-        🔐
-      </div>
+      <div class="mx-auto mb-4 w-14 h-14 rounded-full bg-[#fde4ec] gold-border flex items-center justify-center text-2xl heart-pulse">🔐</div>
       <p class="text-[11px] uppercase tracking-[0.25em] text-[#b88a1e] font-bold mb-1">Sorpresa de Diciembre</p>
       <h2 class="font-serif-elegant text-2xl font-bold text-[#7a3b4e] mb-2">Antes de entrar...</h2>
-      <p class="text-sm text-[#9c5a6e] mb-5 leading-relaxed">
-        Con la pista que te di podés desbloquear el calendario ✨
-      </p>
+      <p class="text-sm text-[#9c5a6e] mb-5 leading-relaxed">Con la pista que te di podés desbloquear el calendario ✨</p>
       <input id="welcomePassInput" type="text" autocomplete="off" placeholder="Escribí la palabra secreta..."
         class="w-full px-4 py-3 rounded-xl border border-[#f2c6d4] focus:outline-none focus:border-[#d4af37] text-center text-sm text-[#7a3b4e] mb-3" />
       <button id="unlockCalendarBtn" type="button"
         class="w-full py-3 rounded-xl bg-gradient-to-r from-[#d47a98] to-[#c96b88] text-white font-semibold text-sm shadow-md hover:opacity-95 transition">
         Desbloquear calendario 💕
       </button>
-      <p id="welcomePassError" class="hidden mt-3 text-xs text-[#c94a6a] font-semibold">
-        Mmm, esa no es la palabra... ¡Probá de nuevo! 💕
-      </p>
+      <p id="welcomePassError" class="hidden mt-3 text-xs text-[#c94a6a] font-semibold">Mmm, esa no es la palabra... ¡Probá de nuevo! 💕</p>
     </div>
   </div>
 
@@ -105,13 +141,8 @@
   <main class="relative z-10 max-w-3xl mx-auto px-4 pt-8 pb-10">
     <header class="text-center mb-8">
       <p class="text-xs uppercase tracking-[0.28em] text-[#b88a1e] font-semibold mb-2">Diciembre · 24 Sorpresas</p>
-      <h1 id="mainTitle" class="font-serif-elegant text-3xl sm:text-5xl font-bold text-[#7a3b4e] leading-tight">
-        Nuestro Adviento
-      </h1>
-      <p id="mainSubtitle" class="mt-2 text-sm sm:text-base text-[#9c5a6e] max-w-md mx-auto">
-        Un detalle chiquito cada día hasta Navidad, pensado especialmente para vos.
-      </p>
-
+      <h1 id="mainTitle" class="font-serif-elegant text-3xl sm:text-5xl font-bold text-[#7a3b4e] leading-tight">Nuestro Adviento</h1>
+      <p id="mainSubtitle" class="mt-2 text-sm sm:text-base text-[#9c5a6e] max-w-md mx-auto">Un detalle chiquito cada día hasta Navidad, pensado especialmente para vos.</p>
       <div class="mt-5 flex justify-center">
         <button id="secretHeartBtn" type="button" aria-label="Detalle decorativo"
           class="heart-pulse inline-flex items-center justify-center w-11 h-11 rounded-full bg-white/85 gold-border shadow-sm hover:shadow-md transition cursor-pointer select-none">
@@ -120,18 +151,16 @@
           </svg>
         </button>
       </div>
-
       <div id="testModeBanner" class="hidden mt-3 inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-100 text-amber-800 text-xs font-semibold border border-amber-300">
         <span>Modo prueba activo (todos los días desbloqueados)</span>
       </div>
     </header>
-
-    <section id="calendarGrid" class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-3 sm:gap-4"></section>
+    <section id="calendarGrid" class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-3.5 sm:gap-4"></section>
   </main>
 
   <!-- Modal: Ver sorpresa -->
-  <div id="dayModal" class="fixed inset-0 z-40 hidden items-center justify-center bg-[#4a1f2d]/50 backdrop-blur-sm p-4">
-    <div id="dayModalCard" class="bg-[#fffafc] gold-border rounded-3xl max-w-md w-full p-6 shadow-2xl relative max-h-[90vh] overflow-y-auto">
+  <div id="dayModal" class="fixed inset-0 z-40 hidden items-center justify-center bg-[#4a1f2d]/50 backdrop-blur-sm p-5">
+    <div id="dayModalCard" class="bg-[#fffafc] gold-border rounded-3xl max-w-md w-full p-6 shadow-2xl relative max-h-[88vh] overflow-y-auto">
       <button id="closeDayModal" class="absolute top-4 right-4 w-8 h-8 rounded-full bg-[#fde4ec] text-[#7a3b4e] flex items-center justify-center font-bold hover:bg-[#f9d5e0]">✕</button>
       <div class="text-center">
         <span id="modalDayBadge" class="inline-block px-3 py-1 rounded-full bg-[#fde4ec] text-[#b88a1e] text-xs font-bold tracking-wider uppercase mb-2">Día 1</span>
@@ -140,8 +169,7 @@
       <div id="modalDayBody" class="mt-3 text-[#7a3b4e] text-sm sm:text-base leading-relaxed"></div>
     </div>
   </div>
-
-  <!-- Modal: Acceso privado -->
+    <!-- Modal: Acceso privado -->
   <div id="authModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-[#4a1f2d]/55 backdrop-blur-sm p-4">
     <div class="bg-white gold-border rounded-3xl max-w-sm w-full p-6 shadow-2xl relative">
       <button id="closeAuthModal" class="absolute top-4 right-4 w-8 h-8 rounded-full bg-[#fde4ec] text-[#7a3b4e] flex items-center justify-center font-bold">✕</button>
@@ -186,12 +214,12 @@
             </div>
 
             <div>
-              <label class="block text-xs font-semibold text-[#9c5a6e] mb-1">Estilo de la casilla (Día especial)</label>
+              <label class="block text-xs font-semibold text-[#9c5a6e] mb-1">Estilo de cajita (Día especial)</label>
               <select id="dayStyleInput" class="w-full px-3 py-2.5 rounded-xl border border-[#f2c6d4] bg-white text-sm">
-                <option value="normal">✨ Clásico</option>
-                <option value="floral">🌸 Especial: Borde floral dorado</option>
-                <option value="filigrana">👑 Especial: Filigrana / Tribal dorado</option>
-                <option value="corazones">💖 Especial: Marco romántico dorado</option>
+                <option value="normal">🎁 Paquetito clásico (color pastel)</option>
+                <option value="floral">✨ Especial: Dorado Metalizado (brillo + meneo)</option>
+                <option value="filigrana">👑 Especial: Rubí y Oro (brillo + meneo)</option>
+                <option value="corazones">💖 Especial: Perla y Oro Rosa (brillo + meneo)</option>
               </select>
             </div>
 
@@ -272,7 +300,8 @@
   </div>
 
   <div id="toastContainer" class="fixed bottom-6 left-1/2 -translate-x-1/2 z-[60] pointer-events-none w-[90%] max-w-sm flex flex-col items-center gap-2"></div>
-    <script type="module">
+
+  <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
     import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
@@ -284,14 +313,10 @@
     const lockScreen = document.getElementById("lockScreen");
     const welcomeInput = document.getElementById("welcomePassInput");
     const welcomeError = document.getElementById("welcomePassError");
-
-    if (localStorage.getItem(WELCOME_UNLOCK_KEY) === "true") {
-      lockScreen.classList.add("hidden");
-    }
+    if (localStorage.getItem(WELCOME_UNLOCK_KEY) === "true") lockScreen.classList.add("hidden");
 
     function tryUnlockWelcome() {
-      const val = welcomeInput.value.trim().toLowerCase();
-      if (val === WELCOME_SECRET_WORD) {
+      if (welcomeInput.value.trim().toLowerCase() === WELCOME_SECRET_WORD) {
         localStorage.setItem(WELCOME_UNLOCK_KEY, "true");
         welcomeError.classList.add("hidden");
         lockScreen.style.opacity = "0";
@@ -300,7 +325,6 @@
         welcomeError.classList.remove("hidden");
       }
     }
-
     document.getElementById("unlockCalendarBtn").addEventListener("click", tryUnlockWelcome);
     welcomeInput.addEventListener("keydown", e => { if (e.key === "Enter") tryUnlockWelcome(); });
 
@@ -313,7 +337,6 @@
       appId: "1:546489659592:web:2dbc3f99abe26bccc7b5fd",
       measurementId: "G-WB38YT9CRE"
     };
-
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
     const calDocRef = doc(db, "calendario", "principal");
@@ -322,24 +345,50 @@
       title: "Nuestro Adviento",
       subtitle: "Un detalle chiquito cada día hasta Navidad, pensado especialmente para vos.",
       testMode: false,
-      days: {
-        1: { style: "normal", type: "carta", title: "¡Empezó diciembre!", message: "Quise armarte este rincón especial para que cada día de diciembre tengas una pequeña sorpresa mía. Te quiero muchísimo." },
-        2: { style: "normal", type: "vale", title: "Vale por elegir la comida", message: "Hoy mandás vos: elegí lo que tengas ganas de comer o merendar y yo me encargo de todo." },
-        3: { style: "normal", type: "cancion", title: "Una canción para vos", message: "Cada vez que escucho este tema me acuerdo de nosotros.", link: "https://open.spotify.com/", startTime: "" }
-      }
+      days: {}
     };
-
     let openedDays = JSON.parse(localStorage.getItem(LOCAL_OPENED_KEY) || "[]");
     let currentEditDay = 1;
     let tempPhotoData = "";
+    let lastTiltDir = 1;
 
-    function showToast(msg) {
+    const BOX_PALETTES = [
+      { bg: "#ffe4ee", border: "#f3b6cb", ribbon: "#e889a8" },
+      { bg: "#fff5e0", border: "#efd392", ribbon: "#dfba63" },
+      { bg: "#f3e8ff", border: "#d8bff8", ribbon: "#b794e6" },
+      { bg: "#ffece3", border: "#f6c5b1", ribbon: "#ec9c7d" },
+      { bg: "#e8f5ff", border: "#bdddf7", ribbon: "#88bae6" }
+    ];
+    const SPECIAL_RIBBONS = { floral: "#fff6cc", filigrana: "#f7d774", corazones: "#d4af37" };
+        function showToast(msg) {
       const c = document.getElementById("toastContainer");
       const el = document.createElement("div");
       el.className = "bg-[#7a3b4e] text-white text-xs sm:text-sm font-medium px-4 py-2.5 rounded-full shadow-lg text-center transition-all";
       el.textContent = msg;
       c.appendChild(el);
       setTimeout(() => { el.style.opacity = "0"; setTimeout(() => el.remove(), 300); }, 2600);
+    }
+
+    function launchConfetti(x, y) {
+      const colors = ["#d4af37", "#f3c84b", "#e889a8", "#ff6b9d", "#ffffff", "#c8a2f8", "#ffd166"];
+      const count = 38;
+      for (let i = 0; i < count; i++) {
+        const p = document.createElement("div");
+        const size = 6 + Math.random() * 6;
+        p.style.cssText = `position:fixed;left:${x}px;top:${y}px;width:${size}px;height:${i % 3 === 0 ? size : size * 0.55}px;background:${colors[i % colors.length]};border-radius:${i % 4 === 0 ? "50%" : "2px"};pointer-events:none;z-index:70;`;
+        document.body.appendChild(p);
+        const angle = (Math.PI * 2 * i) / count + (Math.random() - 0.5) * 0.4;
+        const dist = 70 + Math.random() * 145;
+        const dx = Math.cos(angle) * dist;
+        const dy = Math.sin(angle) * dist - 45;
+        const rot = (Math.random() - 0.5) * 720;
+        const anim = p.animate([
+          { transform: "translate(-50%,-50%) scale(0.4) rotate(0deg)", opacity: 1 },
+          { transform: `translate(calc(-50% + ${dx}px), calc(-50% + ${dy}px)) scale(1.1) rotate(${rot * 0.6}deg)`, opacity: 1, offset: 0.55 },
+          { transform: `translate(calc(-50% + ${dx * 1.15}px), calc(-50% + ${dy + 130}px)) scale(0.7) rotate(${rot}deg)`, opacity: 0 }
+        ], { duration: 750 + Math.random() * 380, easing: "cubic-bezier(0.22, 1, 0.36, 1)" });
+        anim.onfinish = () => p.remove();
+      }
     }
 
     function isDayUnlocked(dayNum) {
@@ -365,47 +414,18 @@
       if (timeStr) {
         const clean = timeStr.trim();
         if (clean.includes(":")) {
-          const parts = clean.split(":").map(Number);
-          if (parts.length === 2 && !isNaN(parts[0]) && !isNaN(parts[1])) return parts[0] * 60 + parts[1];
-          if (parts.length === 3 && !isNaN(parts[0]) && !isNaN(parts[1]) && !isNaN(parts[2])) return parts[0] * 3600 + parts[1] * 60 + parts[2];
+          const p = clean.split(":").map(Number);
+          if (p.length === 2 && !isNaN(p[0]) && !isNaN(p[1])) return p[0] * 60 + p[1];
+          if (p.length === 3 && !isNaN(p[0]) && !isNaN(p[1]) && !isNaN(p[2])) return p[0] * 3600 + p[1] * 60 + p[2];
         }
         const n = parseInt(clean, 10);
         if (!isNaN(n) && n >= 0) return n;
       }
       if (url) {
-        const tMatch = url.match(/[?&](?:t|start)=(\d+)/);
-        if (tMatch) return parseInt(tMatch[1], 10);
+        const t = url.match(/[?&](?:t|start)=(\d+)/);
+        if (t) return parseInt(t[1], 10);
       }
       return 0;
-    }
-
-    function getSpecialOrnament(style) {
-      if (style === "floral") {
-        return `<svg class="ornament-svg" viewBox="0 0 100 100" fill="none">
-          <path d="M8 22 C8 12 12 8 22 8 M12 16 C15 11 19 11 16 16 C19 19 14 21 12 16 Z" stroke="#d4af37" stroke-width="1.6" fill="#f3e2b3"/>
-          <path d="M92 22 C92 12 88 8 78 8 M88 16 C85 11 81 11 84 16 C81 19 86 21 88 16 Z" stroke="#d4af37" stroke-width="1.6" fill="#f3e2b3"/>
-          <path d="M8 78 C8 88 12 92 22 92 M12 84 C15 89 19 89 16 84 C19 81 14 79 12 84 Z" stroke="#d4af37" stroke-width="1.6" fill="#f3e2b3"/>
-          <path d="M92 78 C92 88 88 92 78 92 M88 84 C85 89 81 89 84 84 C81 81 86 79 88 84 Z" stroke="#d4af37" stroke-width="1.6" fill="#f3e2b3"/>
-        </svg>`;
-      }
-      if (style === "filigrana") {
-        return `<svg class="ornament-svg" viewBox="0 0 100 100" fill="none">
-          <path d="M8 26 L8 8 L26 8 M13 13 L20 13 L13 20 Z" stroke="#c59b27" stroke-width="1.7" fill="#ebd38a"/>
-          <path d="M92 26 L92 8 L74 8 M87 13 L80 13 L87 20 Z" stroke="#c59b27" stroke-width="1.7" fill="#ebd38a"/>
-          <path d="M8 74 L8 92 L26 92 M13 87 L20 87 L13 80 Z" stroke="#c59b27" stroke-width="1.7" fill="#ebd38a"/>
-          <path d="M92 74 L92 92 L74 92 M87 87 L80 87 L87 80 Z" stroke="#c59b27" stroke-width="1.7" fill="#ebd38a"/>
-          <circle cx="50" cy="8" r="2.2" fill="#c59b27"/><circle cx="50" cy="92" r="2.2" fill="#c59b27"/>
-        </svg>`;
-      }
-      if (style === "corazones") {
-        return `<svg class="ornament-svg" viewBox="0 0 100 100" fill="none">
-          <text x="10" y="19" font-size="10" fill="#d4af37">♥</text>
-          <text x="82" y="19" font-size="10" fill="#d4af37">♥</text>
-          <text x="10" y="90" font-size="10" fill="#d4af37">♥</text>
-          <text x="82" y="90" font-size="10" fill="#d4af37">♥</text>
-        </svg>`;
-      }
-      return "";
     }
 
     function renderHeader() {
@@ -424,24 +444,33 @@
         const style = dayData.style || "normal";
         const isSpecial = style !== "normal";
         const hasContent = Boolean(dayData.title || dayData.message);
-
-        const specialClass = style === "floral" ? "special-floral" : style === "filigrana" ? "special-filigrana" : style === "corazones" ? "special-corazones" : "";
+        const pal = BOX_PALETTES[(d - 1) % BOX_PALETTES.length];
+        const ribbonColor = isSpecial ? (SPECIAL_RIBBONS[style] || "#f7d774") : pal.ribbon;
+        const specialClass = isSpecial ? `is-special special-${style}` : "";
 
         const card = document.createElement("button");
         card.type = "button";
-        card.className = `day-card aspect-square rounded-2xl p-3 flex flex-col items-center justify-center text-center shadow-sm ${
-          specialClass || "gold-border"
-        } ${
-          unlocked ? (isOpened ? "bg-[#fff0f5] unlocked" : "bg-white unlocked") : "bg-white/65 opacity-85"
-        }`;
+        card.className = `gift-box aspect-square rounded-2xl p-2 flex flex-col items-center justify-center text-center ${specialClass} ${unlocked ? "unlocked" : "opacity-85"}`;
+        if (!isSpecial) {
+          card.style.background = pal.bg;
+          card.style.border = `2px solid ${pal.border}`;
+        } else {
+          card.style.animationDelay = `${(d % 4) * 0.45}s`;
+        }
 
         card.innerHTML = `
-          ${getSpecialOrnament(style)}
-          <span class="relative z-10 text-[10px] uppercase tracking-widest text-[#b88a1e] font-semibold">Dic</span>
-          <span class="relative z-10 font-serif-elegant text-3xl font-bold ${unlocked || isSpecial ? "text-[#7a3b4e]" : "text-[#c49aa7]"}">${d}</span>
-          <span class="relative z-10 mt-1 text-xs">${
-            unlocked ? (isOpened ? "✨" : (isSpecial ? "💝" : "🎁")) : (isSpecial ? "✨🔒" : "🔒")
-          }</span>
+          <div class="ribbon-v" style="background:${ribbonColor};"></div>
+          <div class="ribbon-h" style="background:${ribbonColor};"></div>
+          <svg class="gift-bow" viewBox="0 0 40 20" fill="none">
+            <path d="M20 12 C13 2 3 4 5 11 C7 16 15 15 20 12 Z" fill="${ribbonColor}" stroke="rgba(255,255,255,0.6)" stroke-width="1"/>
+            <path d="M20 12 C27 2 37 4 35 11 C33 16 25 15 20 12 Z" fill="${ribbonColor}" stroke="rgba(255,255,255,0.6)" stroke-width="1"/>
+            <circle cx="20" cy="12" r="3.5" fill="${ribbonColor}" stroke="rgba(255,255,255,0.8)" stroke-width="1"/>
+          </svg>
+          <div class="gift-tag flex flex-col items-center leading-none">
+            <span class="text-[9px] uppercase tracking-widest text-[#b88a1e] font-bold">Dic</span>
+            <span class="font-serif-elegant text-2xl font-bold ${unlocked || isSpecial ? "text-[#7a3b4e]" : "text-[#b68d9b]"} my-0.5">${d}</span>
+            <span class="text-[11px]">${unlocked ? (isOpened ? "✨" : (isSpecial ? "💝" : "🎁")) : (isSpecial ? "✨🔒" : "🔒")}</span>
+          </div>
         `;
 
         card.addEventListener("click", () => {
@@ -454,12 +483,21 @@
             showToast("Todavía estoy preparando la sorpresa de este día ✨");
             return;
           }
-          if (!openedDays.includes(d)) {
-            openedDays.push(d);
-            localStorage.setItem(LOCAL_OPENED_KEY, JSON.stringify(openedDays));
-            renderCalendar();
-          }
-          openDayModal(d);
+          if (card.classList.contains("shaking")) return;
+          card.classList.add("shaking");
+          const rect = card.getBoundingClientRect();
+          const cx = rect.left + rect.width / 2;
+          const cy = rect.top + rect.height / 2;
+          setTimeout(() => {
+            card.classList.remove("shaking");
+            launchConfetti(cx, cy);
+            if (!openedDays.includes(d)) {
+              openedDays.push(d);
+              localStorage.setItem(LOCAL_OPENED_KEY, JSON.stringify(openedDays));
+              renderCalendar();
+            }
+            openDayModal(d);
+          }, 420);
         });
         grid.appendChild(card);
       }
@@ -470,6 +508,14 @@
       const isSpecial = data.style && data.style !== "normal";
       const card = document.getElementById("dayModalCard");
       card.style.border = isSpecial ? "2.5px solid #d4af37" : "";
+
+      lastTiltDir = -lastTiltDir;
+      const tiltAngle = (lastTiltDir * (1.8 + Math.random() * 1.8)).toFixed(2);
+      card.style.setProperty("--card-tilt", `${tiltAngle}deg`);
+      card.classList.remove("card-bounce-in");
+      void card.offsetWidth;
+      card.classList.add("card-bounce-in");
+
       document.getElementById("modalDayBadge").textContent = isSpecial ? `✨ Día Especial · ${dayNum} de Dic ✨` : `Día ${dayNum} de Diciembre`;
       document.getElementById("modalDayTitle").textContent = data.title || `Sorpresa del Día ${dayNum}`;
 
@@ -483,15 +529,7 @@
         const ytId = getYouTubeId(data.link);
         const startSec = parseStartSeconds(data.startTime, data.link);
         if (ytId) {
-          body.innerHTML = `
-            <p class="whitespace-pre-line text-center mb-4">${escapeHtml(data.message || "")}</p>
-            <div class="rounded-2xl overflow-hidden gold-border shadow-md aspect-video bg-black">
-              <iframe class="w-full h-full" src="https://www.youtube.com/embed/${ytId}?start=${startSec}&rel=0"
-                title="Canción" frameborder="0"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
-              </iframe>
-            </div>
-          `;
+          body.innerHTML = `<p class="whitespace-pre-line text-center mb-4">${escapeHtml(data.message || "")}</p><div class="rounded-2xl overflow-hidden gold-border shadow-md aspect-video bg-black"><iframe class="w-full h-full" src="https://www.youtube.com/embed/${ytId}?start=${startSec}&rel=0" title="Canción" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>`;
         } else {
           body.innerHTML = `<p class="whitespace-pre-line text-center mb-4">${escapeHtml(data.message || "")}</p>${data.link ? `<a href="${data.link}" target="_blank" rel="noopener noreferrer" class="block w-full text-center py-3 rounded-xl bg-gradient-to-r from-[#d47a98] to-[#c96b88] text-white font-semibold shadow">🎵 Escuchar canción</a>` : ""}`;
         }
@@ -530,7 +568,6 @@
       const a = document.getElementById("authModal");
       a.classList.add("hidden"); a.classList.remove("flex");
     });
-
     document.getElementById("togglePassEye").addEventListener("click", () => {
       const inp = document.getElementById("adminPassInput");
       inp.type = inp.type === "password" ? "text" : "password";
@@ -541,9 +578,7 @@
         const a = document.getElementById("authModal");
         a.classList.add("hidden"); a.classList.remove("flex");
         openAdminPanel();
-      } else {
-        showToast("Clave incorrecta");
-      }
+      } else { showToast("Clave incorrecta"); }
     }
     document.getElementById("submitAdminPass").addEventListener("click", checkPass);
     document.getElementById("adminPassInput").addEventListener("keydown", e => { if (e.key === "Enter") checkPass(); });
@@ -557,7 +592,6 @@
       const m = document.getElementById("adminModal");
       m.classList.remove("hidden"); m.classList.add("flex");
     }
-
     document.getElementById("closeAdminModal").addEventListener("click", () => {
       const m = document.getElementById("adminModal");
       m.classList.add("hidden"); m.classList.remove("flex");
@@ -569,7 +603,6 @@
       document.getElementById("tabDaysBtn").classList.add("border-[#d4af37]", "text-[#7a3b4e]");
       document.getElementById("tabConfigBtn").classList.remove("border-[#d4af37]", "text-[#7a3b4e]");
     });
-
     document.getElementById("tabConfigBtn").addEventListener("click", () => {
       document.getElementById("tabConfigContent").classList.remove("hidden");
       document.getElementById("tabDaysContent").classList.add("hidden");
@@ -661,7 +694,10 @@
       if (await persistState()) { renderAdminDaySelector(); renderCalendar(); showToast(`¡Día ${currentEditDay} guardado! ✨`); }
     });
 
-    document.getElementById("previewDayBtn").addEventListener("click", () => openDayModal(currentEditDay));
+    document.getElementById("previewDayBtn").addEventListener("click", () => {
+      launchConfetti(window.innerWidth / 2, window.innerHeight / 2);
+      openDayModal(currentEditDay);
+    });
 
     document.getElementById("saveConfigBtn").addEventListener("click", async () => {
       state.title = document.getElementById("configTitleInput").value.trim() || "Nuestro Adviento";
@@ -709,3 +745,5 @@
   </script>
 </body>
 </html>
+
+    
