@@ -201,7 +201,7 @@
                 <option value="carta">💌 Carta / Mensaje</option>
                 <option value="vale">🎟️ Vale canjeable</option>
                 <option value="foto">📸 Foto Polaroid + dedicatoria</option>
-                <option value="cancion">🎵 Canción (Spotify / YouTube)</option>
+                <option value="cancion">🎵 Canción (YouTube / Spotify)</option>
               </select>
             </div>
 
@@ -221,9 +221,15 @@
               <img id="dayPhotoPreview" class="hidden w-full max-h-48 object-cover rounded-xl border border-[#f2c6d4]" />
             </div>
 
-            <div id="linkFieldWrap" class="hidden">
-              <label class="block text-xs font-semibold text-[#9c5a6e] mb-1">Link de Spotify o YouTube</label>
-              <input id="dayLinkInput" type="url" placeholder="https://open.spotify.com/..." class="w-full px-3 py-2.5 rounded-xl border border-[#f2c6d4] text-sm" />
+            <div id="linkFieldWrap" class="hidden space-y-2">
+              <div>
+                <label class="block text-xs font-semibold text-[#9c5a6e] mb-1">Link de YouTube o Spotify</label>
+                <input id="dayLinkInput" type="url" placeholder="https://youtu.be/..." class="w-full px-3 py-2.5 rounded-xl border border-[#f2c6d4] text-sm" />
+              </div>
+              <div>
+                <label class="block text-xs font-semibold text-[#9c5a6e] mb-1">Empezar en (opcional, solo YouTube · ej: 1:46)</label>
+                <input id="dayStartTimeInput" type="text" placeholder="Ej: 1:46" class="w-full px-3 py-2.5 rounded-xl border border-[#f2c6d4] text-sm" />
+              </div>
             </div>
 
             <div class="pt-2 flex gap-2">
@@ -275,7 +281,6 @@
     const ADMIN_SECRET_KEY = "B1869CXI";
     const LOCAL_OPENED_KEY = "calendario_manuela_opened_v1";
 
-    // Lógica pantalla inicial con pista
     const lockScreen = document.getElementById("lockScreen");
     const welcomeInput = document.getElementById("welcomePassInput");
     const welcomeError = document.getElementById("welcomePassError");
@@ -320,7 +325,7 @@
       days: {
         1: { style: "normal", type: "carta", title: "¡Empezó diciembre!", message: "Quise armarte este rincón especial para que cada día de diciembre tengas una pequeña sorpresa mía. Te quiero muchísimo." },
         2: { style: "normal", type: "vale", title: "Vale por elegir la comida", message: "Hoy mandás vos: elegí lo que tengas ganas de comer o merendar y yo me encargo de todo." },
-        3: { style: "normal", type: "cancion", title: "Una canción para vos", message: "Cada vez que escucho este tema me acuerdo de nosotros.", link: "https://open.spotify.com/" }
+        3: { style: "normal", type: "cancion", title: "Una canción para vos", message: "Cada vez que escucho este tema me acuerdo de nosotros.", link: "https://open.spotify.com/", startTime: "" }
       }
     };
 
@@ -348,6 +353,30 @@
       const target = new Date(now.getFullYear(), 11, dayNum);
       const diff = Math.ceil((target - new Date(now.getFullYear(), now.getMonth(), now.getDate())) / 86400000);
       return diff > 0 ? diff : 0;
+    }
+
+    function getYouTubeId(url) {
+      if (!url) return null;
+      const m = url.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|shorts\/))([a-zA-Z0-9_-]{11})/);
+      return m ? m[1] : null;
+    }
+
+    function parseStartSeconds(timeStr, url) {
+      if (timeStr) {
+        const clean = timeStr.trim();
+        if (clean.includes(":")) {
+          const parts = clean.split(":").map(Number);
+          if (parts.length === 2 && !isNaN(parts[0]) && !isNaN(parts[1])) return parts[0] * 60 + parts[1];
+          if (parts.length === 3 && !isNaN(parts[0]) && !isNaN(parts[1]) && !isNaN(parts[2])) return parts[0] * 3600 + parts[1] * 60 + parts[2];
+        }
+        const n = parseInt(clean, 10);
+        if (!isNaN(n) && n >= 0) return n;
+      }
+      if (url) {
+        const tMatch = url.match(/[?&](?:t|start)=(\d+)/);
+        if (tMatch) return parseInt(tMatch[1], 10);
+      }
+      return 0;
     }
 
     function getSpecialOrnament(style) {
@@ -451,7 +480,21 @@
       } else if (data.type === "foto") {
         body.innerHTML = `${data.photo ? `<div class="polaroid rounded-xl mb-4"><img src="${data.photo}" class="w-full max-h-72 object-cover rounded-lg" /></div>` : ""}<p class="whitespace-pre-line text-center">${escapeHtml(data.message || "")}</p>`;
       } else if (data.type === "cancion") {
-        body.innerHTML = `<p class="whitespace-pre-line text-center mb-4">${escapeHtml(data.message || "")}</p>${data.link ? `<a href="${data.link}" target="_blank" rel="noopener noreferrer" class="block w-full text-center py-3 rounded-xl bg-gradient-to-r from-[#d47a98] to-[#c96b88] text-white font-semibold shadow">🎵 Escuchar canción</a>` : ""}`;
+        const ytId = getYouTubeId(data.link);
+        const startSec = parseStartSeconds(data.startTime, data.link);
+        if (ytId) {
+          body.innerHTML = `
+            <p class="whitespace-pre-line text-center mb-4">${escapeHtml(data.message || "")}</p>
+            <div class="rounded-2xl overflow-hidden gold-border shadow-md aspect-video bg-black">
+              <iframe class="w-full h-full" src="https://www.youtube.com/embed/${ytId}?start=${startSec}&rel=0"
+                title="Canción" frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
+              </iframe>
+            </div>
+          `;
+        } else {
+          body.innerHTML = `<p class="whitespace-pre-line text-center mb-4">${escapeHtml(data.message || "")}</p>${data.link ? `<a href="${data.link}" target="_blank" rel="noopener noreferrer" class="block w-full text-center py-3 rounded-xl bg-gradient-to-r from-[#d47a98] to-[#c96b88] text-white font-semibold shadow">🎵 Escuchar canción</a>` : ""}`;
+        }
       } else {
         body.innerHTML = `<p class="whitespace-pre-line text-center">${escapeHtml(data.message || "")}</p>`;
       }
@@ -466,6 +509,7 @@
     document.getElementById("closeDayModal").addEventListener("click", () => {
       const m = document.getElementById("dayModal");
       m.classList.add("hidden"); m.classList.remove("flex");
+      document.getElementById("modalDayBody").innerHTML = "";
     });
 
     let heartClicks = 0, heartTimer = null;
@@ -562,7 +606,7 @@
     document.getElementById("dayTypeInput").addEventListener("change", updateExtraFieldsVisibility);
 
     function loadDayIntoEditor(d) {
-      const data = (state.days && state.days[d]) || { style: "normal", type: "carta", title: "", message: "", link: "", photo: "" };
+      const data = (state.days && state.days[d]) || { style: "normal", type: "carta", title: "", message: "", link: "", startTime: "", photo: "" };
       document.getElementById("editingDayLabel").textContent = `Editando Día ${d}`;
       document.getElementById("editingDayStatus").textContent = (data.title || data.message) ? "Cargado ✓" : "Vacío";
       document.getElementById("dayStyleInput").value = data.style || "normal";
@@ -570,6 +614,7 @@
       document.getElementById("dayTitleInput").value = data.title || "";
       document.getElementById("dayMessageInput").value = data.message || "";
       document.getElementById("dayLinkInput").value = data.link || "";
+      document.getElementById("dayStartTimeInput").value = data.startTime || "";
       document.getElementById("dayPhotoFile").value = "";
       tempPhotoData = data.photo || "";
       const prev = document.getElementById("dayPhotoPreview");
@@ -610,6 +655,7 @@
         title: document.getElementById("dayTitleInput").value.trim(),
         message: document.getElementById("dayMessageInput").value.trim(),
         link: document.getElementById("dayLinkInput").value.trim(),
+        startTime: document.getElementById("dayStartTimeInput").value.trim(),
         photo: tempPhotoData || ""
       };
       if (await persistState()) { renderAdminDaySelector(); renderCalendar(); showToast(`¡Día ${currentEditDay} guardado! ✨`); }
