@@ -16,11 +16,7 @@
       overflow-x: hidden;
       transition: background 0.6s ease, color 0.6s ease;
     }
-    body.night-mode {
-      --bg-top: #091026;
-      --bg-bottom: #18264b;
-      color: #ffffff;
-    }
+    body.night-mode { --bg-top: #091026; --bg-bottom: #18264b; color: #ffffff; }
     body.night-mode #mainTitle { color: #ffffff; text-shadow: 0 0 18px rgba(243, 200, 75, 0.35); }
     body.night-mode #mainSubtitle { color: #d8e2ff; }
     body.night-mode #countdownPill { background: rgba(255, 255, 255, 0.12); color: #fff6d6; border-color: rgba(243, 200, 75, 0.55); }
@@ -30,21 +26,15 @@
     .font-serif-elegant { font-family: 'Playfair Display', serif; }
     .gold-border { border: 1.5px solid rgba(212, 175, 55, 0.45); }
 
-    /* Camino serpenteante */
     .path-wrap { position: relative; max-width: 440px; margin: 0 auto; padding: 10px 6px 30px; }
     .path-row { display: flex; width: 100%; margin-bottom: 18px; position: relative; z-index: 2; }
     .path-left { justify-content: flex-start; padding-left: 8%; }
     .path-center { justify-content: center; }
     .path-right { justify-content: flex-end; padding-right: 8%; }
-    .path-connector {
-      position: absolute; left: 50%; top: 0; bottom: 0; width: 100%;
-      transform: translateX(-50%); pointer-events: none; z-index: 1;
-    }
+    .path-connector { position: absolute; left: 50%; top: 0; bottom: 0; width: 100%; transform: translateX(-50%); pointer-events: none; z-index: 1; }
 
-    /* Cajitas de regalo */
     .gift-box {
-      position: relative; width: 108px; height: 108px;
-      overflow: hidden;
+      position: relative; width: 108px; height: 108px; overflow: hidden;
       transition: transform 0.22s ease, box-shadow 0.22s ease;
       box-shadow: 0 8px 18px -5px rgba(122, 59, 78, 0.22), inset 0 1px 0 rgba(255,255,255,0.75);
     }
@@ -54,13 +44,8 @@
     .ribbon-v { position: absolute; top: 0; bottom: 0; left: 50%; width: 15px; transform: translateX(-50%); opacity: 0.92; pointer-events: none; }
     .ribbon-h { position: absolute; left: 0; right: 0; top: 50%; height: 15px; transform: translateY(-50%); opacity: 0.92; pointer-events: none; }
     .gift-bow { position: absolute; top: 3px; left: 50%; transform: translateX(-50%); width: 36px; height: 19px; z-index: 5; pointer-events: none; filter: drop-shadow(0 2px 2px rgba(0,0,0,0.14)); }
-    .gift-tag {
-      position: relative; z-index: 6; background: rgba(255, 255, 255, 0.93);
-      border-radius: 14px; padding: 4px 11px; min-width: 58px;
-      box-shadow: 0 3px 10px rgba(122, 59, 78, 0.16);
-    }
+    .gift-tag { position: relative; z-index: 6; background: rgba(255, 255, 255, 0.93); border-radius: 14px; padding: 4px 11px; min-width: 58px; box-shadow: 0 3px 10px rgba(122, 59, 78, 0.16); }
 
-    /* Días especiales: brillo animado + aura + meneo */
     .is-special { animation: specialWiggle 3.8s ease-in-out infinite, specialGlow 2.4s ease-in-out infinite; }
     .is-special::after {
       content: ""; position: absolute; top: -20%; left: -120%; width: 65%; height: 140%;
@@ -80,7 +65,6 @@
       95% { transform: rotate(2deg) scale(1.01); }
     }
 
-    /* Meneo al abrir + carta rebotando chueca */
     .shaking { animation: boxShake 0.44s ease-in-out !important; z-index: 20; }
     @keyframes boxShake {
       0% { transform: scale(1) rotate(0deg); }
@@ -99,10 +83,8 @@
       100% { opacity: 1; transform: scale(1) rotate(var(--card-tilt, -2deg)); }
     }
 
-    /* Raspa y gana */
     .scratch-wrap { position: relative; border-radius: 16px; overflow: hidden; user-select: none; touch-action: none; }
     .scratch-canvas { position: absolute; inset: 0; width: 100%; height: 100%; cursor: pointer; z-index: 5; }
-
     .snowflake { position: fixed; top: -10px; color: rgba(212, 175, 55, 0.45); user-select: none; pointer-events: none; z-index: 1; animation: fall linear infinite; }
     @keyframes fall { to { transform: translateY(105vh) rotate(360deg); } }
     .heart-pulse { animation: pulseHeart 2.4s infinite ease-in-out; }
@@ -112,7 +94,6 @@
 </head>
 <body class="relative pb-14">
 
-  <!-- Pantalla inicial con contraseña -->
   <div id="lockScreen" class="fixed inset-0 z-[55] flex items-center justify-center p-5 transition-opacity duration-500"
     style="background: linear-gradient(180deg, #fff5f8 0%, #fde4ec 100%);">
     <div class="bg-white/95 gold-border rounded-3xl max-w-sm w-full p-7 shadow-2xl text-center">
@@ -137,14 +118,11 @@
       <p class="text-xs uppercase tracking-[0.28em] text-[#d4af37] font-semibold mb-2">Diciembre · 24 Sorpresas</p>
       <h1 id="mainTitle" class="font-serif-elegant text-3xl sm:text-5xl font-bold text-[#7a3b4e] leading-tight">Nuestro Adviento</h1>
       <p id="mainSubtitle" class="mt-2 text-sm sm:text-base text-[#9c5a6e] max-w-md mx-auto">Un detalle chiquito cada día hasta Navidad, pensado especialmente para vos.</p>
-
-      <!-- Cuenta regresiva en vivo -->
       <div class="mt-4 flex justify-center">
         <div id="countdownPill" class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/85 gold-border text-xs font-semibold text-[#7a3b4e] shadow-sm">
           <span>⏳</span><span id="countdownText">Calculando próxima sorpresa...</span>
         </div>
       </div>
-
       <div class="mt-4 flex justify-center">
         <button id="secretHeartBtn" type="button" aria-label="Detalle decorativo"
           class="heart-pulse inline-flex items-center justify-center w-11 h-11 rounded-full bg-white/90 gold-border shadow-sm hover:shadow-md transition cursor-pointer select-none">
@@ -157,12 +135,9 @@
         <span>Modo prueba activo (todos los días desbloqueados)</span>
       </div>
     </header>
-
-    <!-- Camino de cajitas -->
     <section id="calendarPath" class="path-wrap"></section>
   </main>
 
-  <!-- Modal: Mini Trivia -->
   <div id="triviaModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-[#4a1f2d]/55 backdrop-blur-sm p-4">
     <div class="bg-white gold-border rounded-3xl max-w-sm w-full p-6 shadow-2xl relative text-center text-[#7a3b4e]">
       <button id="closeTriviaModal" class="absolute top-4 right-4 w-8 h-8 rounded-full bg-[#fde4ec] text-[#7a3b4e] flex items-center justify-center font-bold">✕</button>
@@ -171,14 +146,11 @@
       <h3 id="triviaQuestionText" class="font-serif-elegant text-lg font-bold mb-4"></h3>
       <input id="triviaAnswerInput" type="text" autocomplete="off" placeholder="Escribí tu respuesta..."
         class="w-full px-4 py-3 rounded-xl border border-[#f2c6d4] focus:outline-none focus:border-[#d4af37] text-center text-sm mb-3" />
-      <button id="submitTriviaBtn" class="w-full py-3 rounded-xl bg-gradient-to-r from-[#d47a98] to-[#c96b88] text-white font-semibold text-sm shadow">
-        Destrabar regalo ✨
-      </button>
+      <button id="submitTriviaBtn" class="w-full py-3 rounded-xl bg-gradient-to-r from-[#d47a98] to-[#c96b88] text-white font-semibold text-sm shadow">Destrabar regalo ✨</button>
       <p id="triviaErrorMsg" class="hidden mt-2 text-xs text-[#c94a6a] font-semibold">Casi... ¡Intentá de nuevo! 💕</p>
     </div>
   </div>
 
-  <!-- Modal: Ver sorpresa -->
   <div id="dayModal" class="fixed inset-0 z-40 hidden items-center justify-center bg-[#4a1f2d]/55 backdrop-blur-sm p-5">
     <div id="dayModalCard" class="bg-[#fffafc] gold-border rounded-3xl max-w-md w-full p-6 shadow-2xl relative max-h-[88vh] overflow-y-auto text-[#7a3b4e]">
       <button id="closeDayModal" class="absolute top-4 right-4 w-8 h-8 rounded-full bg-[#fde4ec] text-[#7a3b4e] flex items-center justify-center font-bold hover:bg-[#f9d5e0]">✕</button>
@@ -190,7 +162,6 @@
     </div>
   </div>
 
-  <!-- Modal: Acceso privado Admin -->
   <div id="authModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-[#4a1f2d]/55 backdrop-blur-sm p-4">
     <div class="bg-white gold-border rounded-3xl max-w-sm w-full p-6 shadow-2xl relative text-[#7a3b4e]">
       <button id="closeAuthModal" class="absolute top-4 right-4 w-8 h-8 rounded-full bg-[#fde4ec] text-[#7a3b4e] flex items-center justify-center font-bold">✕</button>
@@ -204,8 +175,7 @@
       <button id="submitAdminPass" class="w-full py-3 rounded-xl bg-gradient-to-r from-[#d47a98] to-[#c96b88] text-white font-semibold text-sm shadow-md">Entrar</button>
     </div>
   </div>
-    <!-- Modal: Panel de Control -->
-  <div id="adminModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-[#4a1f2d]/60 backdrop-blur-sm p-3 sm:p-4 text-[#7a3b4e]">
+    <div id="adminModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-[#4a1f2d]/60 backdrop-blur-sm p-3 sm:p-4 text-[#7a3b4e]">
     <div class="bg-[#fffafc] gold-border rounded-3xl max-w-2xl w-full max-h-[92vh] flex flex-col shadow-2xl overflow-hidden">
       <div class="px-5 py-4 bg-white border-b border-[#f7dce5] flex items-center justify-between">
         <div>
@@ -270,17 +240,10 @@
             </div>
 
             <div id="linkFieldWrap" class="hidden space-y-2">
-              <div>
-                <label class="block text-xs font-semibold text-[#9c5a6e] mb-1">Link de YouTube o Spotify</label>
-                <input id="dayLinkInput" type="url" placeholder="https://youtu.be/..." class="w-full px-3 py-2.5 rounded-xl border border-[#f2c6d4] text-sm" />
-              </div>
-              <div>
-                <label class="block text-xs font-semibold text-[#9c5a6e] mb-1">Empezar en (opcional, solo YouTube · ej: 1:46)</label>
-                <input id="dayStartTimeInput" type="text" placeholder="Ej: 1:46" class="w-full px-3 py-2.5 rounded-xl border border-[#f2c6d4] text-sm" />
-              </div>
+              <input id="dayLinkInput" type="url" placeholder="Link de YouTube o Spotify" class="w-full px-3 py-2.5 rounded-xl border border-[#f2c6d4] text-sm" />
+              <input id="dayStartTimeInput" type="text" placeholder="Empezar en (solo YouTube, ej: 1:46)" class="w-full px-3 py-2.5 rounded-xl border border-[#f2c6d4] text-sm" />
             </div>
 
-            <!-- Mini trivia opcional -->
             <div class="p-3 rounded-xl bg-[#fff5f8] border border-[#f7dce5] space-y-2">
               <p class="text-xs font-bold text-[#7a3b4e]">🗝️ Mini trivia para destrabar (opcional)</p>
               <input id="dayTriviaQInput" type="text" placeholder="Pregunta (ej: ¿Dónde fue nuestra primera cita?)" class="w-full px-3 py-2 rounded-xl border border-[#f2c6d4] text-xs bg-white" />
@@ -302,29 +265,20 @@
             <button id="saveConfigBtn" class="w-full py-2.5 rounded-xl bg-[#d4af37] text-white font-semibold text-sm">Guardar textos</button>
           </div>
 
-          <!-- Contraseña inicial + bloqueo remoto -->
           <div class="bg-white rounded-2xl p-4 border border-[#f7dce5] space-y-3">
             <h4 class="font-bold text-sm">🔐 Contraseña de entrada</h4>
-            <p class="text-xs text-[#9c5a6e]">Al guardar o reiniciar, todos los celulares que ya habían entrado tendrán que poner la clave nueva.</p>
+            <p class="text-xs text-[#9c5a6e]">Al guardar, todos los celulares tendrán que poner la clave nueva.</p>
             <input id="configWelcomePassInput" type="text" placeholder="Ej: celeste" class="w-full px-3 py-2.5 rounded-xl border border-[#f2c6d4] text-sm" />
-            <button id="saveWelcomePassBtn" class="w-full py-2.5 rounded-xl bg-[#c96b88] text-white font-semibold text-sm">
-              Guardar clave y volver a bloquear a todos
-            </button>
+            <button id="saveWelcomePassBtn" class="w-full py-2.5 rounded-xl bg-[#c96b88] text-white font-semibold text-sm">Guardar clave y volver a bloquear a todos</button>
           </div>
 
           <div class="bg-white rounded-2xl p-4 border border-[#f7dce5] space-y-3">
             <div class="flex items-center justify-between">
-              <div>
-                <h4 class="font-bold text-sm">Modo prueba</h4>
-                <p class="text-xs text-[#9c5a6e]">Desbloquea los 24 días hoy.</p>
-              </div>
+              <div><h4 class="font-bold text-sm">Modo prueba</h4><p class="text-xs text-[#9c5a6e]">Desbloquea los 24 días hoy.</p></div>
               <input id="testModeCheckbox" type="checkbox" class="w-5 h-5 accent-[#c96b88]" />
             </div>
             <div class="flex items-center justify-between pt-2 border-t border-[#f7dce5]">
-              <div>
-                <h4 class="font-bold text-sm">Probar Modo Noche ahora</h4>
-                <p class="text-xs text-[#9c5a6e]">Se activa solo a las 22:00, pero acá podés verlo ya.</p>
-              </div>
+              <div><h4 class="font-bold text-sm">Probar Modo Noche ahora</h4><p class="text-xs text-[#9c5a6e]">Se activa solo a las 22:00.</p></div>
               <input id="previewNightCheckbox" type="checkbox" class="w-5 h-5 accent-[#18264b]" />
             </div>
           </div>
@@ -363,10 +317,7 @@
     let state = {
       title: "Nuestro Adviento",
       subtitle: "Un detalle chiquito cada día hasta Navidad, pensado especialmente para vos.",
-      testMode: false,
-      welcomePass: "celeste",
-      welcomeVersion: 1,
-      days: {}
+      testMode: false, welcomePass: "celeste", welcomeVersion: 1, days: {}
     };
 
     let openedDays = JSON.parse(localStorage.getItem(LOCAL_OPENED_KEY) || "[]");
@@ -384,23 +335,19 @@
     ];
     const SPECIAL_RIBBONS = { floral: "#fff6cc", filigrana: "#f7d774", corazones: "#d4af37" };
 
-    // Modo Día / Noche (22:00 a 06:59)
     function applyTimeTheme() {
       const h = new Date().getHours();
-      const isNight = forceNightPreview || (h >= 22 || h < 7);
-      document.body.classList.toggle("night-mode", isNight);
+      document.body.classList.toggle("night-mode", forceNightPreview || (h >= 22 || h < 7));
     }
     applyTimeTheme();
     setInterval(applyTimeTheme, 60000);
 
-    // Contraseña inicial sincronizada con Firebase
     const lockScreen = document.getElementById("lockScreen");
     const welcomeInput = document.getElementById("welcomePassInput");
     const welcomeError = document.getElementById("welcomePassError");
 
     function checkLockScreenState() {
-      const savedVer = localStorage.getItem(LOCAL_UNLOCK_VER_KEY);
-      if (savedVer === String(state.welcomeVersion || 1)) {
+      if (localStorage.getItem(LOCAL_UNLOCK_VER_KEY) === String(state.welcomeVersion || 1)) {
         lockScreen.classList.add("hidden");
       } else {
         lockScreen.style.opacity = "1";
@@ -423,29 +370,19 @@
     document.getElementById("unlockCalendarBtn").addEventListener("click", tryUnlockWelcome);
     welcomeInput.addEventListener("keydown", e => { if (e.key === "Enter") tryUnlockWelcome(); });
 
-    // Sonido "pop" mágico (Web Audio API)
     function playPopSound() {
       try {
         const ctx = new (window.AudioContext || window.webkitAudioContext)();
         const now = ctx.currentTime;
-        const osc = ctx.createOscillator();
-        const gain = ctx.createGain();
-        osc.type = "sine";
-        osc.frequency.setValueAtTime(320, now);
-        osc.frequency.exponentialRampToValueAtTime(760, now + 0.08);
-        gain.gain.setValueAtTime(0.28, now);
-        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.14);
-        osc.connect(gain); gain.connect(ctx.destination);
-        osc.start(now); osc.stop(now + 0.15);
-
+        const osc = ctx.createOscillator(), gain = ctx.createGain();
+        osc.type = "sine"; osc.frequency.setValueAtTime(320, now); osc.frequency.exponentialRampToValueAtTime(760, now + 0.08);
+        gain.gain.setValueAtTime(0.28, now); gain.gain.exponentialRampToValueAtTime(0.001, now + 0.14);
+        osc.connect(gain); gain.connect(ctx.destination); osc.start(now); osc.stop(now + 0.15);
         [880, 1175, 1568].forEach((freq, idx) => {
           const cOsc = ctx.createOscillator(), cGain = ctx.createGain();
-          cOsc.type = "triangle";
-          cOsc.frequency.setValueAtTime(freq, now + 0.06 + idx * 0.045);
-          cGain.gain.setValueAtTime(0.08, now + 0.06 + idx * 0.045);
-          cGain.gain.exponentialRampToValueAtTime(0.001, now + 0.32 + idx * 0.045);
-          cOsc.connect(cGain); cGain.connect(ctx.destination);
-          cOsc.start(now + 0.06 + idx * 0.045); cOsc.stop(now + 0.34 + idx * 0.045);
+          cOsc.type = "triangle"; cOsc.frequency.setValueAtTime(freq, now + 0.06 + idx * 0.045);
+          cGain.gain.setValueAtTime(0.08, now + 0.06 + idx * 0.045); cGain.gain.exponentialRampToValueAtTime(0.001, now + 0.32 + idx * 0.045);
+          cOsc.connect(cGain); cGain.connect(ctx.destination); cOsc.start(now + 0.06 + idx * 0.045); cOsc.stop(now + 0.34 + idx * 0.045);
         });
       } catch {}
     }
@@ -454,20 +391,16 @@
       const c = document.getElementById("toastContainer");
       const el = document.createElement("div");
       el.className = "bg-[#7a3b4e] text-white text-xs sm:text-sm font-medium px-4 py-2.5 rounded-full shadow-lg text-center transition-all";
-      el.textContent = msg;
-      c.appendChild(el);
+      el.textContent = msg; c.appendChild(el);
       setTimeout(() => { el.style.opacity = "0"; setTimeout(() => el.remove(), 300); }, 2600);
     }
-
-    function launchConfetti(x, y, count = 38) {
+          function launchConfetti(x, y, count = 38) {
       const colors = ["#d4af37", "#f3c84b", "#e889a8", "#ff6b9d", "#ffffff", "#c8a2f8", "#ffd166"];
       for (let i = 0; i < count; i++) {
-        const p = document.createElement("div");
-        const size = 6 + Math.random() * 6;
+        const p = document.createElement("div"), size = 6 + Math.random() * 6;
         p.style.cssText = `position:fixed;left:${x}px;top:${y}px;width:${size}px;height:${i % 3 === 0 ? size : size * 0.55}px;background:${colors[i % colors.length]};border-radius:${i % 4 === 0 ? "50%" : "2px"};pointer-events:none;z-index:70;`;
         document.body.appendChild(p);
-        const angle = (Math.PI * 2 * i) / count + (Math.random() - 0.5) * 0.4;
-        const dist = 70 + Math.random() * 145;
+        const angle = (Math.PI * 2 * i) / count + (Math.random() - 0.5) * 0.4, dist = 70 + Math.random() * 145;
         const dx = Math.cos(angle) * dist, dy = Math.sin(angle) * dist - 45, rot = (Math.random() - 0.5) * 720;
         p.animate([
           { transform: "translate(-50%,-50%) scale(0.4) rotate(0deg)", opacity: 1 },
@@ -478,42 +411,25 @@
     }
 
     function launchFireworks() {
-      const pts = [[0.2, 0.25], [0.8, 0.22], [0.5, 0.35], [0.25, 0.6], [0.75, 0.55]];
-      pts.forEach(([px, py], i) => {
-        setTimeout(() => {
-          playPopSound();
-          launchConfetti(window.innerWidth * px, window.innerHeight * py, 44);
-        }, i * 320);
+      [[0.2, 0.25], [0.8, 0.22], [0.5, 0.35], [0.25, 0.6], [0.75, 0.55]].forEach(([px, py], i) => {
+        setTimeout(() => { playPopSound(); launchConfetti(window.innerWidth * px, window.innerHeight * py, 44); }, i * 320);
       });
     }
 
-    // Cuenta regresiva en vivo
     function updateCountdown() {
       const now = new Date();
       let target = null;
-      if (now.getMonth() < 11) {
-        target = new Date(now.getFullYear(), 11, 1, 0, 0, 0);
-      } else if (now.getMonth() === 11 && now.getDate() < 24) {
-        target = new Date(now.getFullYear(), 11, now.getDate() + 1, 0, 0, 0);
-      }
+      if (now.getMonth() < 11) target = new Date(now.getFullYear(), 11, 1, 0, 0, 0);
+      else if (now.getMonth() === 11 && now.getDate() < 24) target = new Date(now.getFullYear(), 11, now.getDate() + 1, 0, 0, 0);
       const el = document.getElementById("countdownText");
-      if (!target) {
-        el.textContent = "¡Todas las sorpresas de diciembre están listas! ✨";
-        return;
-      }
-      const diff = Math.max(0, target - now);
-      const d = Math.floor(diff / 86400000);
-      const h = Math.floor((diff % 86400000) / 3600000);
-      const m = Math.floor((diff % 3600000) / 60000);
-      const s = Math.floor((diff % 60000) / 1000);
-      const pad = n => String(n).padStart(2, "0");
-      el.textContent = d > 0
-        ? `Próxima sorpresa en ${d}d ${pad(h)}h ${pad(m)}m ${pad(s)}s`
-        : `Próxima sorpresa en ${pad(h)}h ${pad(m)}m ${pad(s)}s`;
+      if (!target) { el.textContent = "¡Todas las sorpresas de diciembre están listas! ✨"; return; }
+      const diff = Math.max(0, target - now), pad = n => String(n).padStart(2, "0");
+      const d = Math.floor(diff / 86400000), h = Math.floor((diff % 86400000) / 3600000), m = Math.floor((diff % 3600000) / 60000), s = Math.floor((diff % 60000) / 1000);
+      el.textContent = d > 0 ? `Próxima sorpresa en ${d}d ${pad(h)}h ${pad(m)}m ${pad(s)}s` : `Próxima sorpresa en ${pad(h)}h ${pad(m)}m ${pad(s)}s`;
     }
-    updateCountdown();
-    setInterval(updateCountdown, 1000);
-          function isDayUnlocked(dayNum) {
+    updateCountdown(); setInterval(updateCountdown, 1000);
+
+    function isDayUnlocked(dayNum) {
       if (state.testMode) return true;
       const now = new Date();
       return now.getMonth() === 11 && now.getDate() >= dayNum;
@@ -521,8 +437,7 @@
 
     function daysUntil(dayNum) {
       const now = new Date();
-      const target = new Date(now.getFullYear(), 11, dayNum);
-      return Math.max(0, Math.ceil((target - new Date(now.getFullYear(), now.getMonth(), now.getDate())) / 86400000));
+      return Math.max(0, Math.ceil((new Date(now.getFullYear(), 11, dayNum) - new Date(now.getFullYear(), now.getMonth(), now.getDate())) / 86400000));
     }
 
     function getYouTubeId(url) {
@@ -539,8 +454,7 @@
           if (p.length === 2 && !isNaN(p[0]) && !isNaN(p[1])) return p[0] * 60 + p[1];
           if (p.length === 3 && !isNaN(p[0]) && !isNaN(p[1]) && !isNaN(p[2])) return p[0] * 3600 + p[1] * 60 + p[2];
         }
-        const n = parseInt(clean, 10);
-        if (!isNaN(n) && n >= 0) return n;
+        const n = parseInt(clean, 10); if (!isNaN(n) && n >= 0) return n;
       }
       if (url) { const t = url.match(/[?&](?:t|start)=(\d+)/); if (t) return parseInt(t[1], 10); }
       return 0;
@@ -556,17 +470,11 @@
       if (card.classList.contains("shaking")) return;
       card.classList.add("shaking");
       const rect = card.getBoundingClientRect();
-      const cx = rect.left + rect.width / 2, cy = rect.top + rect.height / 2;
       setTimeout(() => {
-        card.classList.remove("shaking");
-        playPopSound();
-        launchConfetti(cx, cy);
+        card.classList.remove("shaking"); playPopSound();
+        launchConfetti(rect.left + rect.width / 2, rect.top + rect.height / 2);
         if (d === 24) launchFireworks();
-        if (!openedDays.includes(d)) {
-          openedDays.push(d);
-          localStorage.setItem(LOCAL_OPENED_KEY, JSON.stringify(openedDays));
-          renderCalendar();
-        }
+        if (!openedDays.includes(d)) { openedDays.push(d); localStorage.setItem(LOCAL_OPENED_KEY, JSON.stringify(openedDays)); renderCalendar(); }
         openDayModal(d);
       }, 420);
     }
@@ -575,197 +483,111 @@
       const wrap = document.getElementById("calendarPath");
       wrap.innerHTML = `<svg class="path-connector" viewBox="0 0 100 100" preserveAspectRatio="none"><line class="path-line" x1="50" y1="2" x2="50" y2="98" stroke="rgba(212,175,55,0.4)" stroke-width="0.8" stroke-dasharray="1.5 1.5"/></svg>`;
       const pattern = ["path-left", "path-center", "path-right", "path-center"];
-
       for (let d = 1; d <= 24; d++) {
-        const unlocked = isDayUnlocked(d);
-        const isOpened = openedDays.includes(d);
-        const dayData = (state.days && state.days[d]) || {};
-        const style = dayData.style || "normal";
-        const isSpecial = style !== "normal" || d === 24;
+        const unlocked = isDayUnlocked(d), isOpened = openedDays.includes(d), dayData = (state.days && state.days[d]) || {};
+        const style = dayData.style || "normal", isSpecial = style !== "normal" || d === 24;
         const effectiveStyle = (d === 24 && style === "normal") ? "floral" : style;
-        const hasContent = Boolean(dayData.title || dayData.message);
-        const pal = BOX_PALETTES[(d - 1) % BOX_PALETTES.length];
+        const hasContent = Boolean(dayData.title || dayData.message), pal = BOX_PALETTES[(d - 1) % BOX_PALETTES.length];
         const ribbonColor = isSpecial ? (SPECIAL_RIBBONS[effectiveStyle] || "#f7d774") : pal.ribbon;
-
         const row = document.createElement("div");
         row.className = `path-row ${d === 24 ? "path-center mt-4" : pattern[(d - 1) % pattern.length]}`;
-
-        const card = document.createElement("button");
-        card.type = "button";
+        const card = document.createElement("button"); card.type = "button";
         card.className = `gift-box rounded-2xl p-2 flex flex-col items-center justify-center text-center ${d === 24 ? "day-24" : ""} ${isSpecial ? `is-special special-${effectiveStyle}` : ""} ${unlocked ? "unlocked" : "opacity-85"}`;
-        if (!isSpecial) {
-          card.style.background = pal.bg;
-          card.style.border = `2px solid ${pal.border}`;
-        } else {
-          card.style.animationDelay = `${(d % 4) * 0.45}s`;
-        }
-
-        card.innerHTML = `
-          <div class="ribbon-v" style="background:${ribbonColor};"></div>
-          <div class="ribbon-h" style="background:${ribbonColor};"></div>
-          <svg class="gift-bow" viewBox="0 0 40 20" fill="none">
-            <path d="M20 12 C13 2 3 4 5 11 C7 16 15 15 20 12 Z" fill="${ribbonColor}" stroke="rgba(255,255,255,0.6)" stroke-width="1"/>
-            <path d="M20 12 C27 2 37 4 35 11 C33 16 25 15 20 12 Z" fill="${ribbonColor}" stroke="rgba(255,255,255,0.6)" stroke-width="1"/>
-            <circle cx="20" cy="12" r="3.5" fill="${ribbonColor}" stroke="rgba(255,255,255,0.8)" stroke-width="1"/>
-          </svg>
-          <div class="gift-tag flex flex-col items-center leading-none">
-            <span class="text-[9px] uppercase tracking-widest text-[#b88a1e] font-bold">${d === 24 ? "Navidad" : "Dic"}</span>
-            <span class="font-serif-elegant text-2xl font-bold ${unlocked || isSpecial ? "text-[#7a3b4e]" : "text-[#b68d9b]"} my-0.5">${d}</span>
-            <span class="text-[11px]">${unlocked ? (isOpened ? "✨" : (isSpecial ? "💝" : "🎁")) : (isSpecial ? "✨🔒" : "🔒")}</span>
-          </div>
-        `;
-
+        if (!isSpecial) { card.style.background = pal.bg; card.style.border = `2px solid ${pal.border}`; }
+        else { card.style.animationDelay = `${(d % 4) * 0.45}s`; }
+        card.innerHTML = `<div class="ribbon-v" style="background:${ribbonColor};"></div><div class="ribbon-h" style="background:${ribbonColor};"></div><svg class="gift-bow" viewBox="0 0 40 20" fill="none"><path d="M20 12 C13 2 3 4 5 11 C7 16 15 15 20 12 Z" fill="${ribbonColor}" stroke="rgba(255,255,255,0.6)" stroke-width="1"/><path d="M20 12 C27 2 37 4 35 11 C33 16 25 15 20 12 Z" fill="${ribbonColor}" stroke="rgba(255,255,255,0.6)" stroke-width="1"/><circle cx="20" cy="12" r="3.5" fill="${ribbonColor}" stroke="rgba(255,255,255,0.8)" stroke-width="1"/></svg><div class="gift-tag flex flex-col items-center leading-none"><span class="text-[9px] uppercase tracking-widest text-[#b88a1e] font-bold">${d === 24 ? "Navidad" : "Dic"}</span><span class="font-serif-elegant text-2xl font-bold ${unlocked || isSpecial ? "text-[#7a3b4e]" : "text-[#b68d9b]"} my-0.5">${d}</span><span class="text-[11px]">${unlocked ? (isOpened ? "✨" : (isSpecial ? "💝" : "🎁")) : (isSpecial ? "✨🔒" : "🔒")}</span></div>`;
         card.addEventListener("click", () => {
-          if (!unlocked) {
-            const faltan = daysUntil(d);
-            showToast(faltan === 1 ? "¡Epa, nada de espiar! Falta solo 1 día 💕" : `¡Epa, nada de espiar! Faltan ${faltan} días 💕`);
-            return;
-          }
+          if (!unlocked) { const f = daysUntil(d); showToast(f === 1 ? "¡Epa, nada de espiar! Falta solo 1 día 💕" : `¡Epa, nada de espiar! Faltan ${f} días 💕`); return; }
           if (!hasContent) { showToast("Todavía estoy preparando la sorpresa de este día ✨"); return; }
           if (dayData.triviaQ && dayData.triviaA && !solvedTrivias.includes(d)) {
             pendingTriviaDay = d; pendingTriviaCard = card;
             document.getElementById("triviaQuestionText").textContent = dayData.triviaQ;
-            document.getElementById("triviaAnswerInput").value = "";
-            document.getElementById("triviaErrorMsg").classList.add("hidden");
-            const tm = document.getElementById("triviaModal");
-            tm.classList.remove("hidden"); tm.classList.add("flex");
-            document.getElementById("triviaAnswerInput").focus();
-            return;
+            document.getElementById("triviaAnswerInput").value = ""; document.getElementById("triviaErrorMsg").classList.add("hidden");
+            const tm = document.getElementById("triviaModal"); tm.classList.remove("hidden"); tm.classList.add("flex");
+            document.getElementById("triviaAnswerInput").focus(); return;
           }
           triggerBoxOpen(card, d);
         });
-
-        row.appendChild(card);
-        wrap.appendChild(row);
+        row.appendChild(card); wrap.appendChild(row);
       }
-    }
-
-    // Trivia handlers
-    function checkTrivia() {
+        }
+          function checkTrivia() {
       if (!pendingTriviaDay) return;
       const expected = ((state.days[pendingTriviaDay] || {}).triviaA || "").trim().toLowerCase();
-      const got = document.getElementById("triviaAnswerInput").value.trim().toLowerCase();
-      if (got === expected) {
-        solvedTrivias.push(pendingTriviaDay);
-        localStorage.setItem(LOCAL_TRIVIA_KEY, JSON.stringify(solvedTrivias));
-        const tm = document.getElementById("triviaModal");
-        tm.classList.add("hidden"); tm.classList.remove("flex");
+      if (document.getElementById("triviaAnswerInput").value.trim().toLowerCase() === expected) {
+        solvedTrivias.push(pendingTriviaDay); localStorage.setItem(LOCAL_TRIVIA_KEY, JSON.stringify(solvedTrivias));
+        const tm = document.getElementById("triviaModal"); tm.classList.add("hidden"); tm.classList.remove("flex");
         triggerBoxOpen(pendingTriviaCard, pendingTriviaDay);
-      } else {
-        document.getElementById("triviaErrorMsg").classList.remove("hidden");
-      }
+      } else { document.getElementById("triviaErrorMsg").classList.remove("hidden"); }
     }
     document.getElementById("submitTriviaBtn").addEventListener("click", checkTrivia);
     document.getElementById("triviaAnswerInput").addEventListener("keydown", e => { if (e.key === "Enter") checkTrivia(); });
-    document.getElementById("closeTriviaModal").addEventListener("click", () => {
-      const tm = document.getElementById("triviaModal");
-      tm.classList.add("hidden"); tm.classList.remove("flex");
-    });
+    document.getElementById("closeTriviaModal").addEventListener("click", () => { document.getElementById("triviaModal").classList.add("hidden"); document.getElementById("triviaModal").classList.remove("flex"); });
 
     function initScratchCard(canvas) {
-      const ctx = canvas.getContext("2d");
-      const rect = canvas.parentElement.getBoundingClientRect();
+      const ctx = canvas.getContext("2d"), rect = canvas.parentElement.getBoundingClientRect();
       canvas.width = rect.width; canvas.height = rect.height;
       const grad = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
       grad.addColorStop(0, "#f5d76e"); grad.addColorStop(0.5, "#d4af37"); grad.addColorStop(1, "#b88a1e");
-      ctx.fillStyle = grad;
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-      ctx.fillStyle = "rgba(255,255,255,0.92)";
-      ctx.font = "bold 15px Quicksand, sans-serif";
-      ctx.textAlign = "center";
+      ctx.fillStyle = grad; ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = "rgba(255,255,255,0.92)"; ctx.font = "bold 15px Quicksand, sans-serif"; ctx.textAlign = "center";
       ctx.fillText("✨ Raspá con el dedo ✨", canvas.width / 2, canvas.height / 2 + 5);
-
       let drawing = false;
       const scratch = (e) => {
         if (!drawing) return;
-        const r = canvas.getBoundingClientRect();
-        const pt = e.touches ? e.touches[0] : e;
-        ctx.globalCompositeOperation = "destination-out";
-        ctx.beginPath();
-        ctx.arc(pt.clientX - r.left, pt.clientY - r.top, 22, 0, Math.PI * 2);
-        ctx.fill();
+        const r = canvas.getBoundingClientRect(), pt = e.touches ? e.touches[0] : e;
+        ctx.globalCompositeOperation = "destination-out"; ctx.beginPath(); ctx.arc(pt.clientX - r.left, pt.clientY - r.top, 22, 0, Math.PI * 2); ctx.fill();
       };
-      canvas.addEventListener("mousedown", e => { drawing = true; scratch(e); });
-      canvas.addEventListener("mousemove", scratch);
+      canvas.addEventListener("mousedown", e => { drawing = true; scratch(e); }); canvas.addEventListener("mousemove", scratch);
       window.addEventListener("mouseup", () => drawing = false);
       canvas.addEventListener("touchstart", e => { drawing = true; scratch(e); }, { passive: true });
-      canvas.addEventListener("touchmove", scratch, { passive: true });
-      canvas.addEventListener("touchend", () => drawing = false);
+      canvas.addEventListener("touchmove", scratch, { passive: true }); canvas.addEventListener("touchend", () => drawing = false);
     }
 
     function openDayModal(dayNum) {
       clearInterval(typewriterTimer);
       const data = (state.days && state.days[dayNum]) || { type: "carta", title: `Día ${dayNum}`, message: "Sorpresa en camino..." };
       const isSpecial = (data.style && data.style !== "normal") || dayNum === 24;
-      const card = document.getElementById("dayModalCard");
-      card.style.border = isSpecial ? "2.5px solid #d4af37" : "";
-
-      lastTiltDir = -lastTiltDir;
-      card.style.setProperty("--card-tilt", `${(lastTiltDir * (1.8 + Math.random() * 1.8)).toFixed(2)}deg`);
+      const card = document.getElementById("dayModalCard"); card.style.border = isSpecial ? "2.5px solid #d4af37" : "";
+      lastTiltDir = -lastTiltDir; card.style.setProperty("--card-tilt", `${(lastTiltDir * (1.8 + Math.random() * 1.8)).toFixed(2)}deg`);
       card.classList.remove("card-bounce-in"); void card.offsetWidth; card.classList.add("card-bounce-in");
-
       document.getElementById("modalDayBadge").textContent = dayNum === 24 ? "🎄 Gran Final · 24 de Dic 🎄" : (isSpecial ? `✨ Día Especial · ${dayNum} de Dic ✨` : `Día ${dayNum} de Diciembre`);
       document.getElementById("modalDayTitle").textContent = data.title || `Sorpresa del Día ${dayNum}`;
-
-      const body = document.getElementById("modalDayBody");
-      body.innerHTML = "";
+      const body = document.getElementById("modalDayBody"); body.innerHTML = "";
       if (data.type === "vale") {
         body.innerHTML = `<div class="scratch-wrap my-2 border-2 border-dashed border-[#d4af37] bg-[#fff5f8]"><div class="p-6 text-center"><div class="text-2xl mb-1">🎟️</div><p class="text-xs uppercase tracking-widest text-[#b88a1e] font-bold mb-2">Vale Canjeable</p><p class="whitespace-pre-line text-[#7a3b4e] font-medium">${escapeHtml(data.message || "")}</p></div><canvas id="scratchCanvas" class="scratch-canvas"></canvas></div>`;
         setTimeout(() => { const cv = document.getElementById("scratchCanvas"); if (cv) initScratchCard(cv); }, 60);
       } else if (data.type === "foto") {
         body.innerHTML = `${data.photo ? `<div class="polaroid rounded-xl mb-4"><img src="${data.photo}" class="w-full max-h-72 object-cover rounded-lg" /></div>` : ""}<p class="whitespace-pre-line text-center">${escapeHtml(data.message || "")}</p>`;
       } else if (data.type === "cancion") {
-        const ytId = getYouTubeId(data.link);
-        const startSec = parseStartSeconds(data.startTime, data.link);
+        const ytId = getYouTubeId(data.link), startSec = parseStartSeconds(data.startTime, data.link);
         body.innerHTML = ytId
           ? `<p class="whitespace-pre-line text-center mb-4">${escapeHtml(data.message || "")}</p><div class="rounded-2xl overflow-hidden gold-border shadow-md aspect-video bg-black"><iframe class="w-full h-full" src="https://www.youtube.com/embed/${ytId}?start=${startSec}&rel=0" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>`
           : `<p class="whitespace-pre-line text-center mb-4">${escapeHtml(data.message || "")}</p>${data.link ? `<a href="${data.link}" target="_blank" rel="noopener noreferrer" class="block w-full text-center py-3 rounded-xl bg-gradient-to-r from-[#d47a98] to-[#c96b88] text-white font-semibold shadow">🎵 Escuchar canción</a>` : ""}`;
       } else {
-        const p = document.createElement("p");
-        p.className = "whitespace-pre-line text-center cursor-pointer";
-        body.appendChild(p);
-        const fullText = data.message || "";
-        let idx = 0;
+        const p = document.createElement("p"); p.className = "whitespace-pre-line text-center cursor-pointer"; body.appendChild(p);
+        const fullText = data.message || ""; let idx = 0;
         p.addEventListener("click", () => { clearInterval(typewriterTimer); p.textContent = fullText; });
-        typewriterTimer = setInterval(() => {
-          p.textContent = fullText.slice(0, ++idx);
-          if (idx >= fullText.length) clearInterval(typewriterTimer);
-        }, 28);
+        typewriterTimer = setInterval(() => { p.textContent = fullText.slice(0, ++idx); if (idx >= fullText.length) clearInterval(typewriterTimer); }, 28);
       }
-      const m = document.getElementById("dayModal");
-      m.classList.remove("hidden"); m.classList.add("flex");
+      const m = document.getElementById("dayModal"); m.classList.remove("hidden"); m.classList.add("flex");
     }
 
-    function escapeHtml(str) {
-      return str.replace(/[&<>"']/g, m => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[m]));
-    }
+    function escapeHtml(str) { return str.replace(/[&<>"']/g, m => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[m])); }
+    document.getElementById("closeDayModal").addEventListener("click", () => { clearInterval(typewriterTimer); const m = document.getElementById("dayModal"); m.classList.add("hidden"); m.classList.remove("flex"); document.getElementById("modalDayBody").innerHTML = ""; });
 
-    document.getElementById("closeDayModal").addEventListener("click", () => {
-      clearInterval(typewriterTimer);
-      const m = document.getElementById("dayModal");
-      m.classList.add("hidden"); m.classList.remove("flex");
-      document.getElementById("modalDayBody").innerHTML = "";
-    });
-
-    // Acceso secreto Admin
     let heartClicks = 0, heartTimer = null;
     document.getElementById("secretHeartBtn").addEventListener("click", () => {
       heartClicks++; clearTimeout(heartTimer);
-      if (heartClicks >= 3) {
-        heartClicks = 0;
-        const auth = document.getElementById("authModal");
-        document.getElementById("adminPassInput").value = "";
-        auth.classList.remove("hidden"); auth.classList.add("flex");
-        document.getElementById("adminPassInput").focus();
-      } else { heartTimer = setTimeout(() => { heartClicks = 0; }, 2500); }
+      if (heartClicks >= 3) { heartClicks = 0; const a = document.getElementById("authModal"); document.getElementById("adminPassInput").value = ""; a.classList.remove("hidden"); a.classList.add("flex"); document.getElementById("adminPassInput").focus(); }
+      else { heartTimer = setTimeout(() => { heartClicks = 0; }, 2500); }
     });
     document.getElementById("closeAuthModal").addEventListener("click", () => { document.getElementById("authModal").classList.add("hidden"); document.getElementById("authModal").classList.remove("flex"); });
     document.getElementById("togglePassEye").addEventListener("click", () => { const i = document.getElementById("adminPassInput"); i.type = i.type === "password" ? "text" : "password"; });
 
     function checkPass() {
       if (document.getElementById("adminPassInput").value.trim() === ADMIN_SECRET_KEY) {
-        document.getElementById("authModal").classList.add("hidden"); document.getElementById("authModal").classList.remove("flex");
-        openAdminPanel();
+        document.getElementById("authModal").classList.add("hidden"); document.getElementById("authModal").classList.remove("flex"); openAdminPanel();
       } else { showToast("Clave incorrecta"); }
     }
     document.getElementById("submitAdminPass").addEventListener("click", checkPass);
@@ -773,60 +595,37 @@
 
     function openAdminPanel() {
       renderAdminDaySelector(); loadDayIntoEditor(currentEditDay);
-      document.getElementById("configTitleInput").value = state.title || "";
-      document.getElementById("configSubtitleInput").value = state.subtitle || "";
+      document.getElementById("configTitleInput").value = state.title || ""; document.getElementById("configSubtitleInput").value = state.subtitle || "";
       document.getElementById("configWelcomePassInput").value = state.welcomePass || "celeste";
-      document.getElementById("testModeCheckbox").checked = Boolean(state.testMode);
-      document.getElementById("previewNightCheckbox").checked = forceNightPreview;
-      const m = document.getElementById("adminModal");
-      m.classList.remove("hidden"); m.classList.add("flex");
+      document.getElementById("testModeCheckbox").checked = Boolean(state.testMode); document.getElementById("previewNightCheckbox").checked = forceNightPreview;
+      const m = document.getElementById("adminModal"); m.classList.remove("hidden"); m.classList.add("flex");
     }
     document.getElementById("closeAdminModal").addEventListener("click", () => { document.getElementById("adminModal").classList.add("hidden"); document.getElementById("adminModal").classList.remove("flex"); });
-
-    document.getElementById("tabDaysBtn").addEventListener("click", () => {
-      document.getElementById("tabDaysContent").classList.remove("hidden"); document.getElementById("tabConfigContent").classList.add("hidden");
-      document.getElementById("tabDaysBtn").classList.add("border-[#d4af37]", "text-[#7a3b4e]"); document.getElementById("tabConfigBtn").classList.remove("border-[#d4af37]", "text-[#7a3b4e]");
-    });
-    document.getElementById("tabConfigBtn").addEventListener("click", () => {
-      document.getElementById("tabConfigContent").classList.remove("hidden"); document.getElementById("tabDaysContent").classList.add("hidden");
-      document.getElementById("tabConfigBtn").classList.add("border-[#d4af37]", "text-[#7a3b4e]"); document.getElementById("tabDaysBtn").classList.remove("border-[#d4af37]", "text-[#7a3b4e]");
-    });
+    document.getElementById("tabDaysBtn").addEventListener("click", () => { document.getElementById("tabDaysContent").classList.remove("hidden"); document.getElementById("tabConfigContent").classList.add("hidden"); document.getElementById("tabDaysBtn").classList.add("border-[#d4af37]", "text-[#7a3b4e]"); document.getElementById("tabConfigBtn").classList.remove("border-[#d4af37]", "text-[#7a3b4e]"); });
+    document.getElementById("tabConfigBtn").addEventListener("click", () => { document.getElementById("tabConfigContent").classList.remove("hidden"); document.getElementById("tabDaysContent").classList.add("hidden"); document.getElementById("tabConfigBtn").classList.add("border-[#d4af37]", "text-[#7a3b4e]"); document.getElementById("tabDaysBtn").classList.remove("border-[#d4af37]", "text-[#7a3b4e]"); });
 
     function renderAdminDaySelector() {
       const wrap = document.getElementById("adminDaySelector"); wrap.innerHTML = "";
       for (let d = 1; d <= 24; d++) {
-        const day = (state.days && state.days[d]) || {};
-        const filled = Boolean(day.title || day.message), special = day.style && day.style !== "normal";
+        const day = (state.days && state.days[d]) || {}, filled = Boolean(day.title || day.message), special = day.style && day.style !== "normal";
         const btn = document.createElement("button"); btn.type = "button"; btn.textContent = special ? `${d}★` : d;
         btn.className = `py-1.5 rounded-lg text-xs font-bold border transition ${d === currentEditDay ? "bg-[#c96b88] text-white border-[#c96b88]" : special ? "bg-[#fdf2d6] text-[#9a7212] border-[#d4af37]" : filled ? "bg-[#fde4ec] text-[#7a3b4e] border-[#f2c6d4]" : "bg-white text-[#9c5a6e] border-[#f2c6d4]"}`;
-        btn.addEventListener("click", () => { currentEditDay = d; renderAdminDaySelector(); loadDayIntoEditor(d); });
-        wrap.appendChild(btn);
+        btn.addEventListener("click", () => { currentEditDay = d; renderAdminDaySelector(); loadDayIntoEditor(d); }); wrap.appendChild(btn);
       }
     }
 
-    function updateExtraFieldsVisibility() {
-      const t = document.getElementById("dayTypeInput").value;
-      document.getElementById("photoFieldWrap").classList.toggle("hidden", t !== "foto");
-      document.getElementById("linkFieldWrap").classList.toggle("hidden", t !== "cancion");
-    }
+    function updateExtraFieldsVisibility() { const t = document.getElementById("dayTypeInput").value; document.getElementById("photoFieldWrap").classList.toggle("hidden", t !== "foto"); document.getElementById("linkFieldWrap").classList.toggle("hidden", t !== "cancion"); }
     document.getElementById("dayTypeInput").addEventListener("change", updateExtraFieldsVisibility);
 
     function loadDayIntoEditor(d) {
       const data = (state.days && state.days[d]) || { style: "normal", type: "carta", title: "", message: "", link: "", startTime: "", triviaQ: "", triviaA: "", photo: "" };
-      document.getElementById("editingDayLabel").textContent = `Editando Día ${d}`;
-      document.getElementById("editingDayStatus").textContent = (data.title || data.message) ? "Cargado ✓" : "Vacío";
-      document.getElementById("dayStyleInput").value = data.style || "normal";
-      document.getElementById("dayTypeInput").value = data.type || "carta";
-      document.getElementById("dayTitleInput").value = data.title || "";
-      document.getElementById("dayMessageInput").value = data.message || "";
-      document.getElementById("dayLinkInput").value = data.link || "";
-      document.getElementById("dayStartTimeInput").value = data.startTime || "";
-      document.getElementById("dayTriviaQInput").value = data.triviaQ || "";
-      document.getElementById("dayTriviaAInput").value = data.triviaA || "";
-      document.getElementById("dayPhotoFile").value = "";
-      tempPhotoData = data.photo || "";
-      const prev = document.getElementById("dayPhotoPreview");
-      if (tempPhotoData) { prev.src = tempPhotoData; prev.classList.remove("hidden"); } else { prev.classList.add("hidden"); }
+      document.getElementById("editingDayLabel").textContent = `Editando Día ${d}`; document.getElementById("editingDayStatus").textContent = (data.title || data.message) ? "Cargado ✓" : "Vacío";
+      document.getElementById("dayStyleInput").value = data.style || "normal"; document.getElementById("dayTypeInput").value = data.type || "carta";
+      document.getElementById("dayTitleInput").value = data.title || ""; document.getElementById("dayMessageInput").value = data.message || "";
+      document.getElementById("dayLinkInput").value = data.link || ""; document.getElementById("dayStartTimeInput").value = data.startTime || "";
+      document.getElementById("dayTriviaQInput").value = data.triviaQ || ""; document.getElementById("dayTriviaAInput").value = data.triviaA || "";
+      document.getElementById("dayPhotoFile").value = ""; tempPhotoData = data.photo || "";
+      const prev = document.getElementById("dayPhotoPreview"); if (tempPhotoData) { prev.src = tempPhotoData; prev.classList.remove("hidden"); } else { prev.classList.add("hidden"); }
       updateExtraFieldsVisibility();
     }
 
@@ -837,438 +636,50 @@
         const img = new Image();
         img.onload = () => {
           const canvas = document.createElement("canvas"), scale = Math.min(1, 720 / img.width);
-          canvas.width = img.width * scale; canvas.height = img.height * scale;
-          canvas.getContext("2d").drawImage(img, 0, 0, canvas.width, canvas.height);
-          tempPhotoData = canvas.toDataURL("image/jpeg", 0.72);
-          const prev = document.getElementById("dayPhotoPreview");
-          prev.src = tempPhotoData; prev.classList.remove("hidden");
+          canvas.width = img.width * scale; canvas.height = img.height * scale; canvas.getContext("2d").drawImage(img, 0, 0, canvas.width, canvas.height);
+          tempPhotoData = canvas.toDataURL("image/jpeg", 0.72); const prev = document.getElementById("dayPhotoPreview"); prev.src = tempPhotoData; prev.classList.remove("hidden");
         };
         img.src = ev.target.result;
       };
       reader.readAsDataURL(file);
     });
 
-    async function persistState() {
-      try { await setDoc(calDocRef, state, { merge: true }); return true; }
-      catch (err) { console.error(err); showToast("Error al guardar en Firebase"); return false; }
-    }
+    async function persistState() { try { await setDoc(calDocRef, state, { merge: true }); return true; } catch (err) { console.error(err); showToast("Error al guardar en Firebase"); return false; } }
 
     document.getElementById("saveDayBtn").addEventListener("click", async () => {
       if (!state.days) state.days = {};
       state.days[currentEditDay] = {
-        style:    function isDayUnlocked(dayNum) {
-      if (state.testMode) return true;
-      const now = new Date();
-      return now.getMonth() === 11 && now.getDate() >= dayNum;
-    }
-
-    function daysUntil(dayNum) {
-      const now = new Date();
-      const target = new Date(now.getFullYear(), 11, dayNum);
-      return Math.max(0, Math.ceil((target - new Date(now.getFullYear(), now.getMonth(), now.getDate())) / 86400000));
-    }
-
-    function getYouTubeId(url) {
-      if (!url) return null;
-      const m = url.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|shorts\/))([a-zA-Z0-9_-]{11})/);
-      return m ? m[1] : null;
-    }
-
-    function parseStartSeconds(timeStr, url) {
-      if (timeStr) {
-        const clean = timeStr.trim();
-        if (clean.includes(":")) {
-          const p = clean.split(":").map(Number);
-          if (p.length === 2 && !isNaN(p[0]) && !isNaN(p[1])) return p[0] * 60 + p[1];
-          if (p.length === 3 && !isNaN(p[0]) && !isNaN(p[1]) && !isNaN(p[2])) return p[0] * 3600 + p[1] * 60 + p[2];
-        }
-        const n = parseInt(clean, 10);
-        if (!isNaN(n) && n >= 0) return n;
-      }
-      if (url) { const t = url.match(/[?&](?:t|start)=(\d+)/); if (t) return parseInt(t[1], 10); }
-      return 0;
-    }
-
-    function renderHeader() {
-      document.getElementById("mainTitle").textContent = state.title || "Nuestro Adviento";
-      document.getElementById("mainSubtitle").textContent = state.subtitle || "";
-      document.getElementById("testModeBanner").classList.toggle("hidden", !state.testMode);
-    }
-
-    function triggerBoxOpen(card, d) {
-      if (card.classList.contains("shaking")) return;
-      card.classList.add("shaking");
-      const rect = card.getBoundingClientRect();
-      const cx = rect.left + rect.width / 2, cy = rect.top + rect.height / 2;
-      setTimeout(() => {
-        card.classList.remove("shaking");
-        playPopSound();
-        launchConfetti(cx, cy);
-        if (d === 24) launchFireworks();
-        if (!openedDays.includes(d)) {
-          openedDays.push(d);
-          localStorage.setItem(LOCAL_OPENED_KEY, JSON.stringify(openedDays));
-          renderCalendar();
-        }
-        openDayModal(d);
-      }, 420);
-    }
-
-    function renderCalendar() {
-      const wrap = document.getElementById("calendarPath");
-      wrap.innerHTML = `<svg class="path-connector" viewBox="0 0 100 100" preserveAspectRatio="none"><line class="path-line" x1="50" y1="2" x2="50" y2="98" stroke="rgba(212,175,55,0.4)" stroke-width="0.8" stroke-dasharray="1.5 1.5"/></svg>`;
-      const pattern = ["path-left", "path-center", "path-right", "path-center"];
-
-      for (let d = 1; d <= 24; d++) {
-        const unlocked = isDayUnlocked(d);
-        const isOpened = openedDays.includes(d);
-        const dayData = (state.days && state.days[d]) || {};
-        const style = dayData.style || "normal";
-        const isSpecial = style !== "normal" || d === 24;
-        const effectiveStyle = (d === 24 && style === "normal") ? "floral" : style;
-        const hasContent = Boolean(dayData.title || dayData.message);
-        const pal = BOX_PALETTES[(d - 1) % BOX_PALETTES.length];
-        const ribbonColor = isSpecial ? (SPECIAL_RIBBONS[effectiveStyle] || "#f7d774") : pal.ribbon;
-
-        const row = document.createElement("div");
-        row.className = `path-row ${d === 24 ? "path-center mt-4" : pattern[(d - 1) % pattern.length]}`;
-
-        const card = document.createElement("button");
-        card.type = "button";
-        card.className = `gift-box rounded-2xl p-2 flex flex-col items-center justify-center text-center ${d === 24 ? "day-24" : ""} ${isSpecial ? `is-special special-${effectiveStyle}` : ""} ${unlocked ? "unlocked" : "opacity-85"}`;
-        if (!isSpecial) {
-          card.style.background = pal.bg;
-          card.style.border = `2px solid ${pal.border}`;
-        } else {
-          card.style.animationDelay = `${(d % 4) * 0.45}s`;
-        }
-
-        card.innerHTML = `
-          <div class="ribbon-v" style="background:${ribbonColor};"></div>
-          <div class="ribbon-h" style="background:${ribbonColor};"></div>
-          <svg class="gift-bow" viewBox="0 0 40 20" fill="none">
-            <path d="M20 12 C13 2 3 4 5 11 C7 16 15 15 20 12 Z" fill="${ribbonColor}" stroke="rgba(255,255,255,0.6)" stroke-width="1"/>
-            <path d="M20 12 C27 2 37 4 35 11 C33 16 25 15 20 12 Z" fill="${ribbonColor}" stroke="rgba(255,255,255,0.6)" stroke-width="1"/>
-            <circle cx="20" cy="12" r="3.5" fill="${ribbonColor}" stroke="rgba(255,255,255,0.8)" stroke-width="1"/>
-          </svg>
-          <div class="gift-tag flex flex-col items-center leading-none">
-            <span class="text-[9px] uppercase tracking-widest text-[#b88a1e] font-bold">${d === 24 ? "Navidad" : "Dic"}</span>
-            <span class="font-serif-elegant text-2xl font-bold ${unlocked || isSpecial ? "text-[#7a3b4e]" : "text-[#b68d9b]"} my-0.5">${d}</span>
-            <span class="text-[11px]">${unlocked ? (isOpened ? "✨" : (isSpecial ? "💝" : "🎁")) : (isSpecial ? "✨🔒" : "🔒")}</span>
-          </div>
-        `;
-
-        card.addEventListener("click", () => {
-          if (!unlocked) {
-            const faltan = daysUntil(d);
-            showToast(faltan === 1 ? "¡Epa, nada de espiar! Falta solo 1 día 💕" : `¡Epa, nada de espiar! Faltan ${faltan} días 💕`);
-            return;
-          }
-          if (!hasContent) { showToast("Todavía estoy preparando la sorpresa de este día ✨"); return; }
-          if (dayData.triviaQ && dayData.triviaA && !solvedTrivias.includes(d)) {
-            pendingTriviaDay = d; pendingTriviaCard = card;
-            document.getElementById("triviaQuestionText").textContent = dayData.triviaQ;
-            document.getElementById("triviaAnswerInput").value = "";
-            document.getElementById("triviaErrorMsg").classList.add("hidden");
-            const tm = document.getElementById("triviaModal");
-            tm.classList.remove("hidden"); tm.classList.add("flex");
-            document.getElementById("triviaAnswerInput").focus();
-            return;
-          }
-          triggerBoxOpen(card, d);
-        });
-
-        row.appendChild(card);
-        wrap.appendChild(row);
-      }
-    }
-
-    // Trivia handlers
-    function checkTrivia() {
-      if (!pendingTriviaDay) return;
-      const expected = ((state.days[pendingTriviaDay] || {}).triviaA || "").trim().toLowerCase();
-      const got = document.getElementById("triviaAnswerInput").value.trim().toLowerCase();
-      if (got === expected) {
-        solvedTrivias.push(pendingTriviaDay);
-        localStorage.setItem(LOCAL_TRIVIA_KEY, JSON.stringify(solvedTrivias));
-        const tm = document.getElementById("triviaModal");
-        tm.classList.add("hidden"); tm.classList.remove("flex");
-        triggerBoxOpen(pendingTriviaCard, pendingTriviaDay);
-      } else {
-        document.getElementById("triviaErrorMsg").classList.remove("hidden");
-      }
-    }
-    document.getElementById("submitTriviaBtn").addEventListener("click", checkTrivia);
-    document.getElementById("triviaAnswerInput").addEventListener("keydown", e => { if (e.key === "Enter") checkTrivia(); });
-    document.getElementById("closeTriviaModal").addEventListener("click", () => {
-      const tm = document.getElementById("triviaModal");
-      tm.classList.add("hidden"); tm.classList.remove("flex");
-    });
-
-    function initScratchCard(canvas) {
-      const ctx = canvas.getContext("2d");
-      const rect = canvas.parentElement.getBoundingClientRect();
-      canvas.width = rect.width; canvas.height = rect.height;
-      const grad = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
-      grad.addColorStop(0, "#f5d76e"); grad.addColorStop(0.5, "#d4af37"); grad.addColorStop(1, "#b88a1e");
-      ctx.fillStyle = grad;
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-      ctx.fillStyle = "rgba(255,255,255,0.92)";
-      ctx.font = "bold 15px Quicksand, sans-serif";
-      ctx.textAlign = "center";
-      ctx.fillText("✨ Raspá con el dedo ✨", canvas.width / 2, canvas.height / 2 + 5);
-
-      let drawing = false;
-      const scratch = (e) => {
-        if (!drawing) return;
-        const r = canvas.getBoundingClientRect();
-        const pt = e.touches ? e.touches[0] : e;
-        ctx.globalCompositeOperation = "destination-out";
-        ctx.beginPath();
-        ctx.arc(pt.clientX - r.left, pt.clientY - r.top, 22, 0, Math.PI * 2);
-        ctx.fill();
-      };
-      canvas.addEventListener("mousedown", e => { drawing = true; scratch(e); });
-      canvas.addEventListener("mousemove", scratch);
-      window.addEventListener("mouseup", () => drawing = false);
-      canvas.addEventListener("touchstart", e => { drawing = true; scratch(e); }, { passive: true });
-      canvas.addEventListener("touchmove", scratch, { passive: true });
-      canvas.addEventListener("touchend", () => drawing = false);
-    }
-
-    function openDayModal(dayNum) {
-      clearInterval(typewriterTimer);
-      const data = (state.days && state.days[dayNum]) || { type: "carta", title: `Día ${dayNum}`, message: "Sorpresa en camino..." };
-      const isSpecial = (data.style && data.style !== "normal") || dayNum === 24;
-      const card = document.getElementById("dayModalCard");
-      card.style.border = isSpecial ? "2.5px solid #d4af37" : "";
-
-      lastTiltDir = -lastTiltDir;
-      card.style.setProperty("--card-tilt", `${(lastTiltDir * (1.8 + Math.random() * 1.8)).toFixed(2)}deg`);
-      card.classList.remove("card-bounce-in"); void card.offsetWidth; card.classList.add("card-bounce-in");
-
-      document.getElementById("modalDayBadge").textContent = dayNum === 24 ? "🎄 Gran Final · 24 de Dic 🎄" : (isSpecial ? `✨ Día Especial · ${dayNum} de Dic ✨` : `Día ${dayNum} de Diciembre`);
-      document.getElementById("modalDayTitle").textContent = data.title || `Sorpresa del Día ${dayNum}`;
-
-      const body = document.getElementById("modalDayBody");
-      body.innerHTML = "";
-      if (data.type === "vale") {
-        body.innerHTML = `<div class="scratch-wrap my-2 border-2 border-dashed border-[#d4af37] bg-[#fff5f8]"><div class="p-6 text-center"><div class="text-2xl mb-1">🎟️</div><p class="text-xs uppercase tracking-widest text-[#b88a1e] font-bold mb-2">Vale Canjeable</p><p class="whitespace-pre-line text-[#7a3b4e] font-medium">${escapeHtml(data.message || "")}</p></div><canvas id="scratchCanvas" class="scratch-canvas"></canvas></div>`;
-        setTimeout(() => { const cv = document.getElementById("scratchCanvas"); if (cv) initScratchCard(cv); }, 60);
-      } else if (data.type === "foto") {
-        body.innerHTML = `${data.photo ? `<div class="polaroid rounded-xl mb-4"><img src="${data.photo}" class="w-full max-h-72 object-cover rounded-lg" /></div>` : ""}<p class="whitespace-pre-line text-center">${escapeHtml(data.message || "")}</p>`;
-      } else if (data.type === "cancion") {
-        const ytId = getYouTubeId(data.link);
-        const startSec = parseStartSeconds(data.startTime, data.link);
-        body.innerHTML = ytId
-          ? `<p class="whitespace-pre-line text-center mb-4">${escapeHtml(data.message || "")}</p><div class="rounded-2xl overflow-hidden gold-border shadow-md aspect-video bg-black"><iframe class="w-full h-full" src="https://www.youtube.com/embed/${ytId}?start=${startSec}&rel=0" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>`
-          : `<p class="whitespace-pre-line text-center mb-4">${escapeHtml(data.message || "")}</p>${data.link ? `<a href="${data.link}" target="_blank" rel="noopener noreferrer" class="block w-full text-center py-3 rounded-xl bg-gradient-to-r from-[#d47a98] to-[#c96b88] text-white font-semibold shadow">🎵 Escuchar canción</a>` : ""}`;
-      } else {
-        const p = document.createElement("p");
-        p.className = "whitespace-pre-line text-center cursor-pointer";
-        body.appendChild(p);
-        const fullText = data.message || "";
-        let idx = 0;
-        p.addEventListener("click", () => { clearInterval(typewriterTimer); p.textContent = fullText; });
-        typewriterTimer = setInterval(() => {
-          p.textContent = fullText.slice(0, ++idx);
-          if (idx >= fullText.length) clearInterval(typewriterTimer);
-        }, 28);
-      }
-      const m = document.getElementById("dayModal");
-      m.classList.remove("hidden"); m.classList.add("flex");
-    }
-
-    function escapeHtml(str) {
-      return str.replace(/[&<>"']/g, m => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[m]));
-    }
-
-    document.getElementById("closeDayModal").addEventListener("click", () => {
-      clearInterval(typewriterTimer);
-      const m = document.getElementById("dayModal");
-      m.classList.add("hidden"); m.classList.remove("flex");
-      document.getElementById("modalDayBody").innerHTML = "";
-    });
-
-    // Acceso secreto Admin
-    let heartClicks = 0, heartTimer = null;
-    document.getElementById("secretHeartBtn").addEventListener("click", () => {
-      heartClicks++; clearTimeout(heartTimer);
-      if (heartClicks >= 3) {
-        heartClicks = 0;
-        const auth = document.getElementById("authModal");
-        document.getElementById("adminPassInput").value = "";
-        auth.classList.remove("hidden"); auth.classList.add("flex");
-        document.getElementById("adminPassInput").focus();
-      } else { heartTimer = setTimeout(() => { heartClicks = 0; }, 2500); }
-    });
-    document.getElementById("closeAuthModal").addEventListener("click", () => { document.getElementById("authModal").classList.add("hidden"); document.getElementById("authModal").classList.remove("flex"); });
-    document.getElementById("togglePassEye").addEventListener("click", () => { const i = document.getElementById("adminPassInput"); i.type = i.type === "password" ? "text" : "password"; });
-
-    function checkPass() {
-      if (document.getElementById("adminPassInput").value.trim() === ADMIN_SECRET_KEY) {
-        document.getElementById("authModal").classList.add("hidden"); document.getElementById("authModal").classList.remove("flex");
-        openAdminPanel();
-      } else { showToast("Clave incorrecta"); }
-    }
-    document.getElementById("submitAdminPass").addEventListener("click", checkPass);
-    document.getElementById("adminPassInput").addEventListener("keydown", e => { if (e.key === "Enter") checkPass(); });
-
-    function openAdminPanel() {
-      renderAdminDaySelector(); loadDayIntoEditor(currentEditDay);
-      document.getElementById("configTitleInput").value = state.title || "";
-      document.getElementById("configSubtitleInput").value = state.subtitle || "";
-      document.getElementById("configWelcomePassInput").value = state.welcomePass || "celeste";
-      document.getElementById("testModeCheckbox").checked = Boolean(state.testMode);
-      document.getElementById("previewNightCheckbox").checked = forceNightPreview;
-      const m = document.getElementById("adminModal");
-      m.classList.remove("hidden"); m.classList.add("flex");
-    }
-    document.getElementById("closeAdminModal").addEventListener("click", () => { document.getElementById("adminModal").classList.add("hidden"); document.getElementById("adminModal").classList.remove("flex"); });
-
-    document.getElementById("tabDaysBtn").addEventListener("click", () => {
-      document.getElementById("tabDaysContent").classList.remove("hidden"); document.getElementById("tabConfigContent").classList.add("hidden");
-      document.getElementById("tabDaysBtn").classList.add("border-[#d4af37]", "text-[#7a3b4e]"); document.getElementById("tabConfigBtn").classList.remove("border-[#d4af37]", "text-[#7a3b4e]");
-    });
-    document.getElementById("tabConfigBtn").addEventListener("click", () => {
-      document.getElementById("tabConfigContent").classList.remove("hidden"); document.getElementById("tabDaysContent").classList.add("hidden");
-      document.getElementById("tabConfigBtn").classList.add("border-[#d4af37]", "text-[#7a3b4e]"); document.getElementById("tabDaysBtn").classList.remove("border-[#d4af37]", "text-[#7a3b4e]");
-    });
-
-    function renderAdminDaySelector() {
-      const wrap = document.getElementById("adminDaySelector"); wrap.innerHTML = "";
-      for (let d = 1; d <= 24; d++) {
-        const day = (state.days && state.days[d]) || {};
-        const filled = Boolean(day.title || day.message), special = day.style && day.style !== "normal";
-        const btn = document.createElement("button"); btn.type = "button"; btn.textContent = special ? `${d}★` : d;
-        btn.className = `py-1.5 rounded-lg text-xs font-bold border transition ${d === currentEditDay ? "bg-[#c96b88] text-white border-[#c96b88]" : special ? "bg-[#fdf2d6] text-[#9a7212] border-[#d4af37]" : filled ? "bg-[#fde4ec] text-[#7a3b4e] border-[#f2c6d4]" : "bg-white text-[#9c5a6e] border-[#f2c6d4]"}`;
-        btn.addEventListener("click", () => { currentEditDay = d; renderAdminDaySelector(); loadDayIntoEditor(d); });
-        wrap.appendChild(btn);
-      }
-    }
-
-    function updateExtraFieldsVisibility() {
-      const t = document.getElementById("dayTypeInput").value;
-      document.getElementById("photoFieldWrap").classList.toggle("hidden", t !== "foto");
-      document.getElementById("linkFieldWrap").classList.toggle("hidden", t !== "cancion");
-    }
-    document.getElementById("dayTypeInput").addEventListener("change", updateExtraFieldsVisibility);
-
-    function loadDayIntoEditor(d) {
-      const data = (state.days && state.days[d]) || { style: "normal", type: "carta", title: "", message: "", link: "", startTime: "", triviaQ: "", triviaA: "", photo: "" };
-      document.getElementById("editingDayLabel").textContent = `Editando Día ${d}`;
-      document.getElementById("editingDayStatus").textContent = (data.title || data.message) ? "Cargado ✓" : "Vacío";
-      document.getElementById("dayStyleInput").value = data.style || "normal";
-      document.getElementById("dayTypeInput").value = data.type || "carta";
-      document.getElementById("dayTitleInput").value = data.title || "";
-      document.getElementById("dayMessageInput").value = data.message || "";
-      document.getElementById("dayLinkInput").value = data.link || "";
-      document.getElementById("dayStartTimeInput").value = data.startTime || "";
-      document.getElementById("dayTriviaQInput").value = data.triviaQ || "";
-      document.getElementById("dayTriviaAInput").value = data.triviaA || "";
-      document.getElementById("dayPhotoFile").value = "";
-      tempPhotoData = data.photo || "";
-      const prev = document.getElementById("dayPhotoPreview");
-      if (tempPhotoData) { prev.src = tempPhotoData; prev.classList.remove("hidden"); } else { prev.classList.add("hidden"); }
-      updateExtraFieldsVisibility();
-    }
-
-    document.getElementById("dayPhotoFile").addEventListener("change", (e) => {
-      const file = e.target.files[0]; if (!file) return;
-      const reader = new FileReader();
-      reader.onload = (ev) => {
-        const img = new Image();
-        img.onload = () => {
-          const canvas = document.createElement("canvas"), scale = Math.min(1, 720 / img.width);
-          canvas.width = img.width * scale; canvas.height = img.height * scale;
-          canvas.getContext("2d").drawImage(img, 0, 0, canvas.width, canvas.height);
-          tempPhotoData = canvas.toDataURL("image/jpeg", 0.72);
-          const prev = document.getElementById("dayPhotoPreview");
-          prev.src = tempPhotoData; prev.classList.remove("hidden");
-        };
-        img.src = ev.target.result;
-      };
-      reader.readAsDataURL(file);
-    });
-
-    async function persistState() {
-      try { await setDoc(calDocRef, state, { merge: true }); return true; }
-      catch (err) { console.error(err); showToast("Error al guardar en Firebase"); return false; }
-    }
-
-    document.getElementById("saveDayBtn").addEventListener("click", async () => {
-      if (!state.days) state.days = {};
-      state.days[currentEditDay] = {
-        style: document.getElementById("dayStyleInput").value,
-        type: document.getElementById("dayTypeInput").value,
-        title: document.getElementById("dayTitleInput").value.trim(),
-        message: document.getElementById("dayMessageInput").value.trim(),
-        link: document.getElementById("dayLinkInput").value.trim(),
-        startTime: document.getElementById("dayStartTimeInput").value.trim(),
-        triviaQ: document.getElementById("dayTriviaQInput").value.trim(),
-        triviaA: document.getElementById("dayTriviaAInput").value.trim(),
-        photo: tempPhotoData || ""
+        style: document.getElementById("dayStyleInput").value, type: document.getElementById("dayTypeInput").value,
+        title: document.getElementById("dayTitleInput").value.trim(), message: document.getElementById("dayMessageInput").value.trim(),
+        link: document.getElementById("dayLinkInput").value.trim(), startTime: document.getElementById("dayStartTimeInput").value.trim(),
+        triviaQ: document.getElementById("dayTriviaQInput").value.trim(), triviaA: document.getElementById("dayTriviaAInput").value.trim(), photo: tempPhotoData || ""
       };
       if (await persistState()) { renderAdminDaySelector(); renderCalendar(); showToast(`¡Día ${currentEditDay} guardado! ✨`); }
     });
 
-    document.getElementById("previewDayBtn").addEventListener("click", () => {
-      playPopSound(); launchConfetti(window.innerWidth / 2, window.innerHeight / 2);
-      if (currentEditDay === 24) launchFireworks();
-      openDayModal(currentEditDay);
-    });
-
-    document.getElementById("saveConfigBtn").addEventListener("click", async () => {
-      state.title = document.getElementById("configTitleInput").value.trim() || "Nuestro Adviento";
-      state.subtitle = document.getElementById("configSubtitleInput").value.trim();
-      if (await persistState()) { renderHeader(); showToast("Textos guardados ✨"); }
-    });
-
+    document.getElementById("previewDayBtn").addEventListener("click", () => { playPopSound(); launchConfetti(window.innerWidth / 2, window.innerHeight / 2); if (currentEditDay === 24) launchFireworks(); openDayModal(currentEditDay); });
+    document.getElementById("saveConfigBtn").addEventListener("click", async () => { state.title = document.getElementById("configTitleInput").value.trim() || "Nuestro Adviento"; state.subtitle = document.getElementById("configSubtitleInput").value.trim(); if (await persistState()) { renderHeader(); showToast("Textos guardados ✨"); } });
     document.getElementById("saveWelcomePassBtn").addEventListener("click", async () => {
-      const np = document.getElementById("configWelcomePassInput").value.trim();
-      if (!np) { showToast("Escribí una contraseña primero"); return; }
-      state.welcomePass = np;
-      state.welcomeVersion = (state.welcomeVersion || 1) + 1;
-      if (await persistState()) {
-        localStorage.removeItem(LOCAL_UNLOCK_VER_KEY);
-        showToast("Clave actualizada y bloqueada para todos 🔐");
-      }
+      const np = document.getElementById("configWelcomePassInput").value.trim(); if (!np) { showToast("Escribí una contraseña primero"); return; }
+      state.welcomePass = np; state.welcomeVersion = (state.welcomeVersion || 1) + 1;
+      if (await persistState()) { localStorage.removeItem(LOCAL_UNLOCK_VER_KEY); showToast("Clave actualizada y bloqueada para todos 🔐"); }
     });
-
-    document.getElementById("testModeCheckbox").addEventListener("change", async (e) => {
-      state.testMode = e.target.checked;
-      await persistState(); renderHeader(); renderCalendar();
-      showToast(state.testMode ? "Modo prueba activado" : "Modo prueba desactivado");
-    });
-
-    document.getElementById("previewNightCheckbox").addEventListener("change", (e) => {
-      forceNightPreview = e.target.checked;
-      applyTimeTheme();
-    });
-
-    document.getElementById("resetOpenedBtn").addEventListener("click", () => {
-      openedDays = []; solvedTrivias = [];
-      localStorage.removeItem(LOCAL_OPENED_KEY); localStorage.removeItem(LOCAL_TRIVIA_KEY);
-      renderCalendar(); showToast("Cajitas y trivias reiniciadas ✨");
-    });
+    document.getElementById("testModeCheckbox").addEventListener("change", async (e) => { state.testMode = e.target.checked; await persistState(); renderHeader(); renderCalendar(); showToast(state.testMode ? "Modo prueba activado" : "Modo prueba desactivado"); });
+    document.getElementById("previewNightCheckbox").addEventListener("change", (e) => { forceNightPreview = e.target.checked; applyTimeTheme(); });
+    document.getElementById("resetOpenedBtn").addEventListener("click", () => { openedDays = []; solvedTrivias = []; localStorage.removeItem(LOCAL_OPENED_KEY); localStorage.removeItem(LOCAL_TRIVIA_KEY); renderCalendar(); showToast("Cajitas y trivias reiniciadas ✨"); });
 
     onSnapshot(calDocRef, (snap) => {
-      if (snap.exists()) {
-        const data = snap.data();
-        state = { ...state, ...data, days: { ...(state.days || {}), ...(data.days || {}) } };
-      } else { setDoc(calDocRef, state).catch(() => {}); }
+      if (snap.exists()) { const data = snap.data(); state = { ...state, ...data, days: { ...(state.days || {}), ...(data.days || {}) } }; }
+      else { setDoc(calDocRef, state).catch(() => {}); }
       checkLockScreenState(); renderHeader(); renderCalendar();
     }, () => { document.getElementById("syncStatus").textContent = "Sin conexión a la nube"; });
 
     const snow = document.getElementById("snowContainer");
     for (let i = 0; i < 20; i++) {
-      const f = document.createElement("div"); f.className = "snowflake";
-      f.textContent = i % 2 === 0 ? "✦" : "❄";
+      const f = document.createElement("div"); f.className = "snowflake"; f.textContent = i % 2 === 0 ? "✦" : "❄";
       f.style.left = Math.random() * 100 + "vw"; f.style.fontSize = (8 + Math.random() * 10) + "px";
-      f.style.animationDuration = (9 + Math.random() * 12) + "s"; f.style.animationDelay = (Math.random() * 10) + "s";
-      snow.appendChild(f);
+      f.style.animationDuration = (9 + Math.random() * 12) + "s"; f.style.animationDelay = (Math.random() * 10) + "s"; snow.appendChild(f);
     }
-
     checkLockScreenState(); renderHeader(); renderCalendar();
   </script>
 </body>
