@@ -1,0 +1,425 @@
+```html
+<!-- ... existing code ... -->
+    <!-- Toast de notificaciones (reemplaza alert()) -->
+    <div id="toastContainer" class="fixed bottom-6 left-1/2 -translate-x-1/2 z-[60] pointer-events-none w-[90%] max-w-sm flex flex-col items-center gap-2"></div>
+
+    <!-- =====================================================================
+         LÓGICA DE LA APLICACIÓN + FIREBASE EN TIEMPO REAL (PRODUCCIÓN)
+    ====================================================================== -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getFirestore, doc, setDoc, collection, onSnapshot, writeBatch } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+        // ===================================================================
+        // CLAVE PERMANENTE DEL PANEL DE ADMINISTRACIÓN
+        // ===================================================================
+        const ADMIN_SECRET_KEY = "B1869CXI";
+        const LOCAL_OPENED_KEY = "calendario_manuela_opened_days";
+
+        // ===================================================================
+        // CONFIGURACIÓN REAL DE FIREBASE (calendario-manuela)
+        // ===================================================================
+        const firebaseConfig = {
+            apiKey: "AIzaSyDGHdqA4waIYhcjrdWmHxbIxcIpybe0z2c",
+            authDomain: "calendario-manuela.firebaseapp.com",
+            projectId: "calendario-manuela",
+            storageBucket: "calendario-manuela.firebasestorage.app",
+            messagingSenderId: "546489659592",
+            appId: "1:546489659592:web:2dbc3f99abe26bccc7b5fd",
+            measurementId: "G-WB38YT9CRE"
+        };
+
+        // Configuración inicial por defecto
+        const DEFAULT_CONFIG = {
+            title: "Nuestro Calendario de Adviento",
+            subtitle: "24 días de sorpresas para vos ✨",
+            testMode: false
+        };
+
+        // Datos iniciales de ejemplo (Días 1, 2 y 3 pre-cargados en español)
+        const DEFAULT_DAYS = {
+            1: {
+                day: 1,
+                type: "carta",
+                title: "¡Arranca diciembre! ✨",
+                message: "Armé este calendario chiquito pero hecho con todo mi amor para acompañarte cada día hasta Navidad.\n\nCada mañana se va a desbloquear una sorpresa nueva: a veces un vale, a veces un recuerdo, a veces una canción. ¡Espero que te saque una sonrisa todos los días! 🤍",
+                imageUrl: "",
+                linkUrl: "",
+                linkText: "",
+                redeemed: false
+            },
+            2: {
+                day: 2,
+                type: "vale",
+                title: "Vale por elegir la comida de hoy",
+                message: "Cena, merienda o ese antojo que tengas ganas de comer. Hoy mandás vos y yo me encargo de todo 🍕🍦",
+                imageUrl: "",
+                linkUrl: "",
+                linkText: "",
+                redeemed: false
+            },
+            3: {
+                day: 3,
+                type: "cancion",
+                title: "Una canción que me hace acordar a vos",
+                message: "Cada vez que suena este tema se me escapa una sonrisa pensando en nosotros. Poné play, subí el volumen y disfrutala 🎶✨",
+                imageUrl: "",
+                linkUrl: "https://open.spotify.com/",
+                linkText: "Escuchar en Spotify 🎵",
+                redeemed: false
+            }
+        };
+
+        // Estado en memoria
+        let db = null;
+        let config = { ...DEFAULT_CONFIG };
+        let daysData = {};
+        let openedDaysSet = loadOpenedDaysFromStorage();
+
+        for (let i = 1; i <= 24; i++) {
+            daysData[i] = DEFAULT_DAYS[i] ? { ...DEFAULT_DAYS[i] } : createEmptyDay(i);
+        }
+
+        let currentEditingDay = 1;
+        let currentEditorType = 'carta';
+        let currentEditorImageBase64 = '';
+        let heartTapCount = 0;
+        let heartTapTimer = null;
+
+        function createEmptyDay(dayNum) {
+            return {
+                day: dayNum,
+                type: "carta",
+                title: "",
+                message: "",
+                imageUrl: "",
+                linkUrl: "",
+                linkText: "",
+                redeemed: false
+            };
+        }
+
+        // Manejo de días abiertos en localStorage
+        function loadOpenedDaysFromStorage() {
+            try {
+                const raw = localStorage.getItem(LOCAL_OPENED_KEY);
+                const parsed = raw ? JSON.parse(raw) : [];
+                return new Set(Array.isArray(parsed) ? parsed : []);
+            } catch {
+                return new Set();
+            }
+        }
+
+        function saveOpenedDaysToStorage() {
+            try {
+                localStorage.setItem(LOCAL_OPENED_KEY, JSON.stringify(Array.from(openedDaysSet)));
+            } catch (err) {
+                console.error("No se pudo guardar en localStorage:", err);
+            }
+        }
+
+        // ===================================================================
+        // INICIALIZACIÓN DE FIREBASE Y SUSCRIPCIONES EN TIEMPO REAL
+        // ===================================================================
+        function initApp() {
+            try {
+                const app = initializeApp(firebaseConfig);
+                db = getFirestore(app);
+
+                const configRef = doc(db, 'adventCalendar', 'config');
+                const daysColRef = collection(db, 'adventDays');
+
+                // Escuchar configuración en tiempo real
+                onSnapshot(configRef, (snap) => {
+                    if (snap.exists()) {
+                        const data = snap.data();
+                        config = {
+                            title: data.title || DEFAULT_CONFIG.title,
+                            subtitle: data.subtitle || DEFAULT_CONFIG.subtitle,
+                            testMode: Boolean(data.testMode)
+                        };
+                    }
+                    renderHeaderAndStatus();
+                    renderCalendar();
+                    syncConfigForm();
+                }, (err) => {
+                    console.error("Error leyendo configuración:", err);
+                });
+
+                // Escuchar los 24 días en tiempo real
+                onSnapshot(daysColRef, (snapshot) => {
+                    snapshot.forEach((docSnap) => {
+                        const data = docSnap.data();
+                        const dayNum = parseInt(data.day || docSnap.id, 10);
+                        if (dayNum >= 1 && dayNum <= 24) {
+                            daysData[dayNum] = { ...createEmptyDay(dayNum), ...data, day: dayNum };
+                        }
+                    });
+                    finishLoading();
+                    renderCalendar();
+                    if (!document.getElementById('adminPanelModal').classList.contains('hidden')) {
+                        renderAdminDaysList();
+                    }
+                }, (err) => {
+                    console.error("Error leyendo días:", err);
+                    finishLoading();
+                });
+
+            } catch (error) {
+                console.error("Error inicializando Firebase:", error);
+                showToast("No se pudo conectar a la nube. Revisá tu conexión.", "error");
+                finishLoading();
+            }
+        }
+
+        function finishLoading() {
+            document.getElementById('loadingState').classList.add('hidden');
+            document.getElementById('calendarGrid').classList.remove('hidden');
+            renderHeaderAndStatus();
+            renderCalendar();
+        }
+// ... existing code ...
+        // ===================================================================
+        // RENDERIZADO DE LA GRILLA DE 24 CASILLAS
+        // ===================================================================
+        function renderCalendar() {
+            const grid = document.getElementById('calendarGrid');
+            grid.innerHTML = '';
+
+            for (let dayNum = 1; dayNum <= 24; dayNum++) {
+                const { unlocked, daysLeft } = getUnlockStatus(dayNum);
+                const isOpened = openedDaysSet.has(dayNum);
+
+                const card = document.createElement('button');
+                card.type = 'button';
+                card.dataset.day = dayNum;
+// ... existing code ...
+                card.addEventListener('click', () => handleDayClick(dayNum, card, unlocked, daysLeft));
+                grid.appendChild(card);
+            }
+        }
+
+        function handleDayClick(dayNum, cardEl, unlocked, daysLeft) {
+            if (!unlocked) {
+                cardEl.classList.remove('animate-shake');
+                void cardEl.offsetWidth;
+                cardEl.classList.add('animate-shake');
+                const msg = daysLeft === 1
+                    ? "¡Epa, nada de espiar! Falta solo 1 día para esta sorpresa 🤫"
+                    : `¡Epa, nada de espiar! Faltan ${daysLeft} días para esta sorpresa 🤫`;
+                showToast(msg, "warning");
+                return;
+            }
+
+            const dayObj = daysData[dayNum] || createEmptyDay(dayNum);
+            const wasOpened = openedDaysSet.has(dayNum);
+
+            openSurpriseModal(dayObj);
+            if (!wasOpened) {
+                launchConfetti();
+                openedDaysSet.add(dayNum);
+                saveOpenedDaysToStorage();
+                renderCalendar();
+            }
+        }
+// ... existing code ...
+            if (!isRedeemed) {
+                document.getElementById('redeemVoucherBtn').addEventListener('click', async () => {
+                    dayObj.redeemed = true;
+                    daysData[dayObj.day] = dayObj;
+                    launchConfetti();
+                    renderVoucherSurprise(container, dayObj);
+                    showToast("¡Vale canjeado! Ya quedó registrado 💖", "success");
+                    if (db) {
+                        const ref = doc(db, 'adventDays', String(dayObj.day));
+                        setDoc(ref, dayObj, { merge: true }).catch(console.error);
+                    }
+                });
+            }
+        }
+// ... existing code ...
+                const isOpened = openedDaysSet.has(dayNum);
+
+                const item = document.createElement('button');
+                item.type = 'button';
+                item.className = `w-full text-left p-3.5 rounded-2xl border transition-all flex items-center gap-3 shadow-sm ${hasContent ? 'bg-white border-gold-400/45 hover:border-gold-400' : 'bg-white/60 border-blush-200 hover:bg-white'}`;
+
+                item.innerHTML = `
+                    <div class="w-10 h-10 rounded-xl flex items-center justify-center font-serif font-bold text-lg shrink-0 ${hasContent ? 'bg-gold-100 text-gold-600 border border-gold-400/40' : 'bg-blush-100 text-cocoa-700/60'}">
+                        ${dayNum}
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <div class="flex items-center gap-1.5">
+                            <span class="text-sm">${hasContent ? (TYPE_ICONS[d.type] || '✨') : '📝'}</span>
+                            <span class="text-sm font-semibold truncate ${hasContent ? 'text-cocoa-800' : 'text-cocoa-700/50'}">
+                                ${hasContent ? escapeHtml(d.title || 'Sin título') : 'Sin configurar todavía'}
+                            </span>
+                        </div>
+                        <div class="text-[11px] text-cocoa-700/70 truncate mt-0.5">
+                            ${isOpened ? '🤍 Abierto en este dispositivo' : '🔒 Sin abrir'}${d.type === 'vale' && d.redeemed ? ' • 💖 Canjeado' : ''}
+                        </div>
+                    </div>
+                    <span class="text-gold-600 text-xs font-semibold shrink-0">Editar →</span>
+                `;
+
+                item.addEventListener('click', () => openDayEditor(dayNum));
+                listEl.appendChild(item);
+            }
+
+            document.getElementById('completedCountBadge').textContent = `${completedCount}/24 listos`;
+        }
+
+        function openDayEditor(dayNum) {
+            currentEditingDay = dayNum;
+            const d = daysData[dayNum] || createEmptyDay(dayNum);
+
+            document.getElementById('adminDaysListView').classList.add('hidden');
+            document.getElementById('adminDayEditorView').classList.remove('hidden');
+
+            document.getElementById('editorDayHeading').textContent = `Editando Día ${dayNum} de Diciembre`;
+            document.getElementById('editorDayStatus').textContent = openedDaysSet.has(dayNum) ? '🤍 Abierto' : '🔒 Sin abrir';
+// ... existing code ...
+        // Compresión automática de fotos subidas desde el celular/PC para Firebase (máx 800px)
+        document.getElementById('editImageFile').addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                const img = new Image();
+                img.onload = () => {
+                    const canvas = document.createElement('canvas');
+                    const MAX_SIZE = 800;
+                    let width = img.width;
+                    let height = img.height;
+
+                    if (width > height && width > MAX_SIZE) {
+                        height *= MAX_SIZE / width;
+                        width = MAX_SIZE;
+                    } else if (height > MAX_SIZE) {
+                        width *= MAX_SIZE / height;
+                        height = MAX_SIZE;
+                    }
+
+                    canvas.width = width;
+                    canvas.height = height;
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0, width, height);
+
+                    currentEditorImageBase64 = canvas.toDataURL('image/jpeg', 0.72);
+                    document.getElementById('editImageUrl').value = '';
+                    showImagePreview(currentEditorImageBase64);
+                    showToast("Foto cargada y optimizada ✨", "success");
+                };
+                img.src = event.target.result;
+            };
+            reader.readAsDataURL(file);
+        });
+// ... existing code ...
+        document.getElementById('saveDayBtn').addEventListener('click', async () => {
+            const btn = document.getElementById('saveDayBtn');
+            const updatedDay = buildDayObjectFromEditor();
+            daysData[currentEditingDay] = updatedDay;
+            renderCalendar();
+
+            if (db) {
+                btn.disabled = true;
+                btn.textContent = "Guardando...";
+                try {
+                    const ref = doc(db, 'adventDays', String(currentEditingDay));
+                    await setDoc(ref, updatedDay, { merge: true });
+                    btn.textContent = "Guardado en la nube ✓";
+                    showToast(`Día ${currentEditingDay} guardado en la nube ✓`, "success");
+                    setTimeout(() => {
+                        btn.disabled = false;
+                        btn.textContent = "Guardar Día ✨";
+                    }, 1800);
+                } catch (err) {
+                    console.error("Error guardando día:", err);
+                    btn.disabled = false;
+                    btn.textContent = "Guardar Día ✨";
+                    showToast("Error al guardar. Revisá tu conexión o probá con otra foto.", "error");
+                }
+            } else {
+                showToast(`¡Día ${currentEditingDay} guardado! ✨`, "success");
+            }
+        });
+
+        // ===================================================================
+        // CONFIGURACIÓN GENERAL (TÍTULO, SUBTÍTULO, MODO PRUEBA, REINICIO)
+        // ===================================================================
+        function syncConfigForm() {
+            document.getElementById('cfgTitle').value = config.title || DEFAULT_CONFIG.title;
+            document.getElementById('cfgSubtitle').value = config.subtitle || DEFAULT_CONFIG.subtitle;
+            document.getElementById('cfgTestMode').checked = Boolean(config.testMode);
+        }
+
+        document.getElementById('saveConfigBtn').addEventListener('click', async () => {
+            const newTitle = document.getElementById('cfgTitle').value.trim() || DEFAULT_CONFIG.title;
+            const newSubtitle = document.getElementById('cfgSubtitle').value.trim() || DEFAULT_CONFIG.subtitle;
+            const testMode = document.getElementById('cfgTestMode').checked;
+
+            const updatedConfig = {
+                title: newTitle,
+                subtitle: newSubtitle,
+                testMode
+            };
+
+            config = updatedConfig;
+            renderHeaderAndStatus();
+            renderCalendar();
+
+            if (db) {
+                try {
+                    const ref = doc(db, 'adventCalendar', 'config');
+                    await setDoc(ref, updatedConfig, { merge: true });
+                    showToast("Configuración guardada en la nube ✓", "success");
+                } catch (err) {
+                    console.error("Error guardando configuración:", err);
+                    showToast("Error al guardar la configuración.", "error");
+                }
+            } else {
+                showToast("Configuración actualizada ✨", "success");
+            }
+        });
+
+        // Reinicio de días abiertos (localStorage) y vales canjeados
+        document.getElementById('triggerResetBtn').addEventListener('click', () => {
+            document.getElementById('resetActionArea').classList.add('hidden');
+            document.getElementById('resetConfirmArea').classList.remove('hidden');
+        });
+        document.getElementById('cancelResetBtn').addEventListener('click', () => {
+            document.getElementById('resetConfirmArea').classList.add('hidden');
+            document.getElementById('resetActionArea').classList.remove('hidden');
+        });
+        document.getElementById('confirmResetBtn').addEventListener('click', async () => {
+            openedDaysSet.clear();
+            saveOpenedDaysToStorage();
+
+            for (let i = 1; i <= 24; i++) {
+                if (daysData[i]) {
+                    daysData[i].redeemed = false;
+                }
+            }
+            if (db) {
+                try {
+                    const batch = writeBatch(db);
+                    for (let i = 1; i <= 24; i++) {
+                        if (daysData[i] && (daysData[i].title || daysData[i].message || daysData[i].imageUrl || daysData[i].linkUrl)) {
+                            const ref = doc(db, 'adventDays', String(i));
+                            batch.set(ref, { redeemed: false }, { merge: true });
+                        }
+                    }
+                    await batch.commit();
+                } catch (err) {
+                    console.error("Error reiniciando vales:", err);
+                }
+            }
+            document.getElementById('resetConfirmArea').classList.add('hidden');
+            document.getElementById('resetActionArea').classList.remove('hidden');
+            renderCalendar();
+            renderAdminDaysList();
+            showToast("¡Listo! Todos los días volvieron a quedar cerrados ✨", "success");
+        });
+// ... existing code ...
+```
